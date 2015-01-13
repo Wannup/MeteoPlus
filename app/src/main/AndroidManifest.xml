@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.erwan.meteoplus" >
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -21,6 +21,14 @@
         <activity
             android:name=".CitiesActivity"
             android:label="@string/title_activity_cities"
+            android:parentActivityName=".MeteoActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.erwan.meteoplus.MeteoActivity" />
+        </activity>
+        <activity
+            android:name=".FavoritesActivity"
+            android:label="@string/title_activity_favorites"
             android:parentActivityName=".MeteoActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

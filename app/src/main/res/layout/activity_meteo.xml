@@ -6,7 +6,7 @@
 
     <!-- As the main content view, the view below consumes the entire
          space available using match_parent in both dimensions. -->
-    <FrameLayout android:id="@+id/container" android:layout_width="match_parent"
+    <RelativeLayout android:id="@+id/container" android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
         <CheckBox
@@ -15,20 +15,47 @@
             android:text="Ajouter aux favoris"
             android:id="@+id/fav_button"
             android:layout_gravity="center_horizontal|bottom"
-            android:checked="false" />
+            android:checked="false"
+            android:layout_below="@+id/meteoInfo"
+            android:layout_centerHorizontal="true" />
 
         <ImageView
             android:layout_width="174dp"
             android:layout_height="174dp"
             android:id="@+id/weatherImg"
-            android:layout_gravity="center_horizontal|top" />
+            android:layout_gravity="center_horizontal|top"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
 
         <TextView
             android:layout_width="281dp"
             android:layout_height="186dp"
             android:id="@+id/meteoInfo"
-            android:layout_gravity="center" />
-    </FrameLayout>
+            android:layout_gravity="center"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Favoris"
+            android:id="@+id/favorites"
+            android:layout_below="@+id/fav_button"
+            android:layout_alignLeft="@+id/meteoInfo"
+            android:layout_alignStart="@+id/meteoInfo"
+            android:layout_marginTop="32dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Villes"
+            android:id="@+id/cities"
+            android:layout_below="@+id/fav_button"
+            android:layout_alignRight="@+id/meteoInfo"
+            android:layout_alignEnd="@+id/meteoInfo"
+            android:layout_marginTop="32dp"/>
+
+    </RelativeLayout>
 
     <!-- android:layout_gravity="start" tells DrawerLayout to treat
          this as a sliding drawer on the left side for left-to-right
@@ -36,11 +63,11 @@
          If you're not building against API 17 or higher, use
          android:layout_gravity="left" instead. -->
     <!-- The drawer is given a fixed width in dp and extends the full height of
-         the container. -->
+         the container.
     <fragment android:id="@+id/navigation_drawer"
         android:layout_width="@dimen/navigation_drawer_width" android:layout_height="match_parent"
         android:layout_gravity="start"
         android:name="com.example.erwan.meteoplus.NavigationDrawerFragment"
-        tools:layout="@layout/fragment_navigation_drawer" />
+        tools:layout="@layout/fragment_navigation_drawer" />-->
 
 </android.support.v4.widget.DrawerLayout>
