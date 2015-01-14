@@ -21,7 +21,7 @@ public class CitiesActivity extends ActionBarActivity {
         setContentView(R.layout.activity_cities);
         setTitle("Villes suggérées");
 
-        Toast.makeText(this, "On create villes activity", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "On create villes activity", Toast.LENGTH_SHORT).show();
 
         lvList = (ListView)findViewById(R.id.city_list);
         final String[] listStrings = {"Paris","London","Madrid","New York","Sydney","Lyon","Moscow","Brest","Berlin","Tokyo","Montreal","Los Angeles","Las Vegas","Hong Kong","Mexico","Miami","Washington","Roma","Lille","Versailles"};

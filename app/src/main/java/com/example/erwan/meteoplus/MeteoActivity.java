@@ -40,7 +40,7 @@ public class MeteoActivity extends ActionBarActivity  {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meteo);
-        Toast.makeText(this, "On create meteo activity", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "On create meteo activity", Toast.LENGTH_SHORT).show();
         meteoInfo = (TextView) findViewById(R.id.meteoInfo);
 
         mFavButton = (CheckBox) findViewById(R.id.fav_button);

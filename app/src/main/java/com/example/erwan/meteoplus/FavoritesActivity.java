@@ -26,7 +26,7 @@ public class FavoritesActivity extends ActionBarActivity {
 
         favoritesList = (ListView)findViewById(R.id.favoritesView);
 
-        Toast.makeText(this, "On create favoris activity", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "On create favoris activity", Toast.LENGTH_SHORT).show();
 
         this.favorites = getIntent().getStringArrayListExtra("favorites");
 
