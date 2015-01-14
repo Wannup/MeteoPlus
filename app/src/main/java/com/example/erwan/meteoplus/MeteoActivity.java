@@ -1,6 +1,8 @@
 package com.example.erwan.meteoplus;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +18,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 
@@ -31,9 +34,10 @@ public class MeteoActivity extends ActionBarActivity  {
     private Button mCities;
 
     private ArrayList<String> favorites;
+    private SharedPreferences sharedPref;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meteo);
         Toast.makeText(this, "On create meteo activity", Toast.LENGTH_SHORT).show();
@@ -43,7 +47,8 @@ public class MeteoActivity extends ActionBarActivity  {
         mFavorites = (Button) findViewById(R.id.favorites);
         mCities = (Button) findViewById(R.id.cities);
 
-        favorites = new ArrayList<String>();
+        sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        restoreFavorites();
 
         mFavButton.setChecked(false);
         mFavButton.setVisibility(View.INVISIBLE);
@@ -51,10 +56,8 @@ public class MeteoActivity extends ActionBarActivity  {
             @Override
             public void onClick(View v) {
                 if(mFavButton.isChecked()){
-                    //    mNavigationDrawerFragment.addItemToLateralMenu(getCityName());
                     addItemToFavorites(getCityName());
                 } else {
-                    //     mNavigationDrawerFragment.deleteItemToLateralMenu(getCityName());
                     deleteItemFromFavorites(getCityName());
                 }
             }
@@ -76,19 +79,6 @@ public class MeteoActivity extends ActionBarActivity  {
                 startActivityForResult(intentMain, 1);
             }
         });
-    }
-
-
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putStringArrayList("favorites", favorites);
-    }
-
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        this.favorites = savedInstanceState.getStringArrayList("favorites");
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -114,6 +104,9 @@ public class MeteoActivity extends ActionBarActivity  {
     public void addItemToFavorites(String name) {
         Toast.makeText(this, "Ville ajoutée aux favoris", Toast.LENGTH_SHORT).show();
         favorites.add(name);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(name, name);
+        editor.commit();
     }
 
     public void deleteItemFromFavorites(String name) {
@@ -123,7 +116,9 @@ public class MeteoActivity extends ActionBarActivity  {
         while (!exist && i < favorites.size()) {
             if (favorites.get(i).equals(name)) {
                 favorites.remove(i);
-            //    aadapter.notifyDataSetChanged();
+                SharedPreferences.Editor editor = sharedPref.edit();
+                sharedPref.edit().remove(name);
+                editor.commit();
                 exist = true;
             }
             i++;
@@ -140,6 +135,11 @@ public class MeteoActivity extends ActionBarActivity  {
             i++;
         }
         return exist;
+    }
+
+    public void restoreFavorites(){
+        Map<String, String> map = (Map<String, String>) sharedPref.getAll();
+        this.favorites = new ArrayList<String>(map.values());
     }
 
     /*
@@ -240,7 +240,6 @@ public class MeteoActivity extends ActionBarActivity  {
             if(attrName.equals(nAttr)){
                 return attrValue;
             }
-            //System.out.println("Found attribute: " + attrName + " with value: " + attrValue);
         }
 
         return "Aucune infos";
