@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,8 @@ public class MeteoActivity extends ActionBarActivity  {
     private CheckBox mFavButton;
     private Button mFavorites;
     private Button mCities;
+    private ImageView weatherImg;
+    private TextView temperature;
 
     private ArrayList<String> favorites;
     private SharedPreferences sharedPref;
@@ -42,10 +45,11 @@ public class MeteoActivity extends ActionBarActivity  {
         setContentView(R.layout.activity_meteo);
         //Toast.makeText(this, "On create meteo activity", Toast.LENGTH_SHORT).show();
         meteoInfo = (TextView) findViewById(R.id.meteoInfo);
-
+        weatherImg = (ImageView) findViewById(R.id.weatherImg);
         mFavButton = (CheckBox) findViewById(R.id.fav_button);
         mFavorites = (Button) findViewById(R.id.favorites);
         mCities = (Button) findViewById(R.id.cities);
+        temperature = (TextView) findViewById(R.id.tempView);
 
         sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         restoreFavorites();
@@ -92,7 +96,86 @@ public class MeteoActivity extends ActionBarActivity  {
         mFavButton.setVisibility(View.VISIBLE);
         mFavButton.setChecked(false);
         getXml(city);
-        meteoInfo.setText(getWeather() + "\nTempérature: " + getTemperature() + "\nHumidité: " + getHumidity() + " %\nPression: " + getPressure() + " hPa\nVent:\nVitesse: " + getWindSpeed() + "\nDirection: " + getWindDirection());
+
+        switch(getWeather()){
+            case "01d":
+                weatherImg.setImageResource(R.drawable.sund);
+                break;
+
+            case "01n":
+                weatherImg.setImageResource(R.drawable.moonn);
+                break;
+
+            case "02d":
+                weatherImg.setImageResource(R.drawable.suncloud);
+                break;
+
+            case "02n":
+                weatherImg.setImageResource(R.drawable.mooncloud);
+                break;
+
+            case "03d":
+                weatherImg.setImageResource(R.drawable.cloud);
+                break;
+
+            case "03n":
+                weatherImg.setImageResource(R.drawable.cloud);
+                break;
+
+            case "04d":
+                weatherImg.setImageResource(R.drawable.darkcloud);
+                break;
+
+            case "04n":
+                weatherImg.setImageResource(R.drawable.darkcloud);
+                break;
+
+            case "09d":
+                weatherImg.setImageResource(R.drawable.rain);
+                break;
+
+            case "09n":
+                weatherImg.setImageResource(R.drawable.rain);
+                break;
+
+            case "10d":
+                weatherImg.setImageResource(R.drawable.suncloudrain);
+                break;
+
+            case "10n":
+                weatherImg.setImageResource(R.drawable.mooncloudrain);
+                break;
+
+            case "11d":
+                weatherImg.setImageResource(R.drawable.lightning);
+                break;
+
+            case "11n":
+                weatherImg.setImageResource(R.drawable.lightning);
+                break;
+
+            case "13d":
+                weatherImg.setImageResource(R.drawable.snow);
+                break;
+
+            case "13n":
+                weatherImg.setImageResource(R.drawable.snow);
+                break;
+
+            case "50d":
+                weatherImg.setImageResource(R.drawable.fog);
+                break;
+
+            case "50n":
+                weatherImg.setImageResource(R.drawable.fog);
+                break;
+            default:
+                weatherImg.setImageResource(0);
+                break;
+        }
+
+        temperature.setText(getTemperature().charAt(0) + " °C");
+        meteoInfo.setText("Humidité: " + getHumidity() + " %\n\nPression: " + getPressure() + " hPa\n\nVitesse du vent: " + getWindSpeed());
 
         if (checkItemInFavorites(city)){
             mFavButton.setChecked(true);
@@ -101,12 +184,20 @@ public class MeteoActivity extends ActionBarActivity  {
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        SharedPreferences.Editor editor = sharedPref.edit();
+        sharedPref.getAll().clear();
+        for(int i=0; i<favorites.size();i++){
+            editor.putString(favorites.get(i), favorites.get(i));
+            editor.commit();
+        }
+    }
+
     public void addItemToFavorites(String name) {
         Toast.makeText(this, "Ville ajoutée aux favoris", Toast.LENGTH_SHORT).show();
         favorites.add(name);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(name, name);
-        editor.commit();
     }
 
     public void deleteItemFromFavorites(String name) {
@@ -116,9 +207,6 @@ public class MeteoActivity extends ActionBarActivity  {
         while (!exist && i < favorites.size()) {
             if (favorites.get(i).equals(name)) {
                 favorites.remove(i);
-                SharedPreferences.Editor editor = sharedPref.edit();
-                sharedPref.edit().remove(name);
-                editor.commit();
                 exist = true;
             }
             i++;
@@ -186,7 +274,7 @@ public class MeteoActivity extends ActionBarActivity  {
         NodeList entries = doc.getElementsByTagName("weather");
 
         Element node = (Element) entries.item(0);
-        return getString("value", node);
+        return getString("icon", node);
 
     }
 

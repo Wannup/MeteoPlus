@@ -23,37 +23,54 @@
             android:layout_width="174dp"
             android:layout_height="174dp"
             android:id="@+id/weatherImg"
-            android:layout_gravity="center_horizontal|top"
-            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
 
         <TextView
             android:layout_width="281dp"
             android:layout_height="186dp"
             android:id="@+id/meteoInfo"
-            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:textSize="18sp"
             android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_toRightOf="@+id/favorites"
+            android:layout_alignRight="@+id/cities"
+            android:layout_alignEnd="@+id/cities" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Favoris"
             android:id="@+id/favorites"
-            android:layout_below="@+id/fav_button"
-            android:layout_alignLeft="@+id/meteoInfo"
-            android:layout_alignStart="@+id/meteoInfo"
-            android:layout_marginTop="32dp" />
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="65dp"
+            android:layout_marginStart="65dp"
+            android:layout_marginBottom="44dp" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Villes"
             android:id="@+id/cities"
-            android:layout_below="@+id/fav_button"
-            android:layout_alignRight="@+id/meteoInfo"
-            android:layout_alignEnd="@+id/meteoInfo"
-            android:layout_marginTop="32dp"/>
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="65dp"
+            android:layout_marginEnd="65dp"
+            android:layout_marginBottom="44dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tempView"
+            android:textAlignment="center"
+            android:textSize="32sp"
+            android:layout_toLeftOf="@+id/meteoInfo"
+            android:layout_alignTop="@+id/meteoInfo"
+            android:layout_above="@+id/fav_button"
+            android:layout_alignLeft="@+id/favorites"
+            android:layout_alignStart="@+id/favorites" />
 
     </RelativeLayout>
 
