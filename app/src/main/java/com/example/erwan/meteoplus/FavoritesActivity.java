@@ -1,5 +1,6 @@
 package com.example.erwan.meteoplus;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -12,7 +13,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 
-public class FavoritesActivity extends ActionBarActivity {
+public class FavoritesActivity extends Activity {
 
     ListView favoritesList;
     private ArrayList<String> favorites;
@@ -25,8 +26,6 @@ public class FavoritesActivity extends ActionBarActivity {
         setTitle("Villes favorites");
 
         favoritesList = (ListView)findViewById(R.id.favoritesView);
-
-        //Toast.makeText(this, "On create favoris activity", Toast.LENGTH_SHORT).show();
 
         this.favorites = getIntent().getStringArrayListExtra("favorites");
 

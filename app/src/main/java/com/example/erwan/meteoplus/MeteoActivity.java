@@ -3,8 +3,10 @@ package com.example.erwan.meteoplus;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -39,11 +41,20 @@ public class MeteoActivity extends ActionBarActivity  {
     private ArrayList<String> favorites;
     private SharedPreferences sharedPref;
 
+    private int orientation;
+
+    private String cityDisplay;
+
     @Override
-    protected void onCreate(final Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_meteo);
-        //Toast.makeText(this, "On create meteo activity", Toast.LENGTH_SHORT).show();
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            setContentView(R.layout.activity_meteo_landscape);
+        } else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+            setContentView(R.layout.activity_meteo);
+        }
+
         meteoInfo = (TextView) findViewById(R.id.meteoInfo);
         weatherImg = (ImageView) findViewById(R.id.weatherImg);
         mFavButton = (CheckBox) findViewById(R.id.fav_button);
@@ -83,6 +94,24 @@ public class MeteoActivity extends ActionBarActivity  {
                 startActivityForResult(intentMain, 1);
             }
         });
+
+        if(savedInstanceState != null){
+            if(savedInstanceState.getString("actualCity") != null) {
+                this.cityDisplay = savedInstanceState.getString("actualCity");
+                displayMeteo(cityDisplay);
+            }
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putString("actualCity", this.cityDisplay);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -173,9 +202,17 @@ public class MeteoActivity extends ActionBarActivity  {
                 weatherImg.setImageResource(0);
                 break;
         }
+        if(getTemperature().charAt(0) == '-' && getTemperature().charAt(1) != '0') {
+            temperature.setText(getTemperature().charAt(0) + " " + getTemperature().charAt(1) + " °C");
+        } else {
+            if (getTemperature().charAt(1) == '0') {
+                temperature.setText(getTemperature().charAt(1) + " °C");
+            } else {
+                temperature.setText(getTemperature().charAt(0) + " °C");
+            }
+        }
 
-        temperature.setText(getTemperature().charAt(0) + " °C");
-        meteoInfo.setText("Humidité: " + getHumidity() + " %\n\nPression: " + getPressure() + " hPa\n\nVitesse du vent: " + getWindSpeed());
+        meteoInfo.setText(Html.fromHtml("<b>" + getCityName() + "<br /><br /></br><small>Humidité: " + getHumidity() + " %<br /><br />Pression: " + getPressure() + " hPa<br /><br />Vitesse du vent: " + getWindSpeed() + " m/s</small>"));
 
         if (checkItemInFavorites(city)){
             mFavButton.setChecked(true);
@@ -256,6 +293,8 @@ public class MeteoActivity extends ActionBarActivity  {
         NodeList entries = doc.getElementsByTagName("city");
 
         Element node = (Element) entries.item(0);
+
+        this.cityDisplay = getString("name", node);
         return getString("name", node);
 
     }

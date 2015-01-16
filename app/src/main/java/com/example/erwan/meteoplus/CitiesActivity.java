@@ -1,5 +1,6 @@
 package com.example.erwan.meteoplus;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -11,7 +12,7 @@ import android.widget.Toast;
 
 
 
-public class CitiesActivity extends ActionBarActivity {
+public class CitiesActivity extends Activity {
 
    ListView lvList = null;
 
