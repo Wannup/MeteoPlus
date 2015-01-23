@@ -115,9 +115,8 @@ public class MeteoActivity extends ActionBarActivity  {
         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, mLocationListener);
 
         if(cityDisplay==null){
-        //    displayMeteo("0", latitude, longitude);
             displayMeteo("0", latitude, longitude);
-            //displayMeteo("0", 35, 139);
+            //displayMeteo("0", 48.853409, 2.3488);
         }
 
     }
@@ -175,9 +174,9 @@ public class MeteoActivity extends ActionBarActivity  {
 
            if(!city.equals("0")) {
                 getXmlWithCity(city);
-           } else {
+            } else {
                 getXmlWithLocation(lat, lon);
-           }
+            }
 
             if(doc != null) {
                 switch (getWeather()) {
