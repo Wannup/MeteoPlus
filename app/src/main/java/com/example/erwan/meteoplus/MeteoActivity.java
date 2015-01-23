@@ -114,10 +114,11 @@ public class MeteoActivity extends ActionBarActivity  {
         LocationManager mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, mLocationListener);
 
-       /* if(cityDisplay==null){
+        if(cityDisplay==null){
         //    displayMeteo("0", latitude, longitude);
-            displayMeteo("0", 2.3488, 48.853409);
-        }*/
+            displayMeteo("0", latitude, longitude);
+            //displayMeteo("0", 35, 139);
+        }
 
     }
 
@@ -173,12 +174,10 @@ public class MeteoActivity extends ActionBarActivity  {
             Log.w("log", "" + lon);
 
            if(!city.equals("0")) {
-                Log.w("log", "city");
                 getXmlWithCity(city);
-            } else {
-                Log.w("log", "loc");
+           } else {
                 getXmlWithLocation(lat, lon);
-            }
+           }
 
             if(doc != null) {
                 switch (getWeather()) {
@@ -356,7 +355,7 @@ public class MeteoActivity extends ActionBarActivity  {
 
     public void getXmlWithLocation(double lat, double lon){
 
-        String urlCityMeteo= "http://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "mode=xml&units=metric&lang=fr&APPID=cd3f1c67011fafe48586264c65fb5d8f";
+        String urlCityMeteo= "http://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&mode=xml&units=metric&lang=fr&APPID=cd3f1c67011fafe48586264c65fb5d8f";
 
         RetrieveWeatherXml xml = new RetrieveWeatherXml();
         try {
