@@ -36,22 +36,32 @@ public class MeteoActivity extends ActionBarActivity  {
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
-    private TextView meteoInfo;
+
+    // Informations récupérées sur OpenWeather
     private Document doc;
+
+    // Elements graphiques
+    private TextView meteoInfo;
     private CheckBox mFavButton;
     private Button mFavorites;
     private Button mCities;
     private ImageView weatherImg;
     private TextView temperature;
 
-    private double longitude;
+    // Latitude et longitude
     private double latitude;
+    private double longitude;
 
+    // Liste de favoris
     private ArrayList<String> favorites;
+
+    // Sauvegarde des favoris
     private SharedPreferences sharedPref;
 
+    // Etat de l'orientation du téléphone
     private int orientation;
 
+    // Ville affichée
     private String cityDisplay;
 
     @Override
