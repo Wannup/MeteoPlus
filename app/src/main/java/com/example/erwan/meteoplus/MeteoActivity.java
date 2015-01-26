@@ -139,19 +139,13 @@ public class MeteoActivity extends ActionBarActivity  {
         }
 
         @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-
-        }
+        public void onStatusChanged(String provider, int status, Bundle extras) {}
 
         @Override
-        public void onProviderEnabled(String provider) {
-
-        }
+        public void onProviderEnabled(String provider) {}
 
         @Override
-        public void onProviderDisabled(String provider) {
-
-        }
+        public void onProviderDisabled(String provider) {}
     };
 
     @Override
@@ -171,8 +165,16 @@ public class MeteoActivity extends ActionBarActivity  {
         }
     }
 
+    // On vérifie que l'on est connecté à internet
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    // Affichage de la Météo
     public void displayMeteo(String city, double lat, double lon) {
-        // update the main content by replacing fragments
 
         if(isNetworkAvailable()) {
             mFavButton.setVisibility(View.VISIBLE);
@@ -182,13 +184,16 @@ public class MeteoActivity extends ActionBarActivity  {
             Log.w("log", "" + lat);
             Log.w("log", "" + lon);
 
-           if(!city.equals("0")) {
+            // Récupération des informations via le nom de la ville ou la location
+            if(!city.equals("0")) {
                 getXmlWithCity(city);
             } else {
                 getXmlWithLocation(lat, lon);
             }
 
             if(doc != null) {
+
+                // Affichage de l'image
                 switch (getWeather()) {
                     case "01d":
                         weatherImg.setImageResource(R.drawable.sund);
@@ -265,6 +270,8 @@ public class MeteoActivity extends ActionBarActivity  {
                         weatherImg.setImageResource(0);
                         break;
                 }
+
+                // Affichage de la température
                 if (getTemperature().charAt(0) == '-' && getTemperature().charAt(1) != '0') {
                     temperature.setText(getTemperature().charAt(0) + " " + getTemperature().charAt(1) + " °C");
                 } else {
@@ -301,6 +308,8 @@ public class MeteoActivity extends ActionBarActivity  {
         super.onStop();
         SharedPreferences.Editor editor = sharedPref.edit();
         sharedPref.getAll().clear();
+
+        // Sauvegarde des favoris pour qu'ils soit disponible à la prochaine ouverture
         for(int i=0; i<favorites.size();i++){
             editor.putString(favorites.get(i), favorites.get(i));
             editor.commit();
@@ -342,8 +351,9 @@ public class MeteoActivity extends ActionBarActivity  {
         this.favorites = new ArrayList<String>(map.values());
     }
 
+
     /*
-    Get infos xml
+    Récupération des infos via xml
      */
 
     public void getXmlWithCity(String city){
@@ -460,12 +470,5 @@ public class MeteoActivity extends ActionBarActivity  {
         }
 
         return "Aucune infos";
-    }
-
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
