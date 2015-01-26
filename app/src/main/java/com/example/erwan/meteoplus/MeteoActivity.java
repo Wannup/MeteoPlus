@@ -125,8 +125,12 @@ public class MeteoActivity extends ActionBarActivity  {
         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, mLocationListener);
 
         if(cityDisplay==null){
-            displayMeteo("0", latitude, longitude);
-            //displayMeteo("0", 48.853409, 2.3488);
+            if(latitude != 0 || longitude != 0) {
+                displayMeteo("0", latitude, longitude);
+                //displayMeteo("0", 48.853409, 2.3488);
+            } else {
+                meteoInfo.setText("Données GPS éronées");
+            }
         }
 
     }
