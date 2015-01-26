@@ -12,12 +12,14 @@
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="71dp"
-            android:text="Ajouter aux favoris"
+            android:text=""
             android:id="@+id/fav_button"
             android:layout_gravity="center_horizontal|bottom"
             android:checked="false"
             android:layout_below="@+id/meteoInfo"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:button="@drawable/fav_selector" />
+
 
         <ImageView
             android:layout_width="174dp"
