@@ -15,9 +15,10 @@
             android:text=""
             android:id="@+id/fav_button"
             android:checked="false"
-            android:layout_above="@+id/cities"
-            android:layout_centerHorizontal="true"
-            android:button="@drawable/fav_selector"/>
+            android:button="@drawable/fav_selector"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/cities"
+            android:layout_toEndOf="@+id/cities" />
 
         <ImageView
             android:layout_width="174dp"
@@ -43,11 +44,11 @@
             android:layout_height="wrap_content"
             android:text="Favoris"
             android:id="@+id/favorites"
-            android:layout_below="@+id/fav_button"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="60dp"
-            android:layout_marginStart="60dp" />
+            android:layout_marginRight="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_below="@+id/meteoInfo"
+            android:layout_toLeftOf="@+id/weatherImg"
+            android:layout_toStartOf="@+id/weatherImg" />
 
         <Button
             android:layout_width="wrap_content"

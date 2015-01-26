@@ -16,9 +16,10 @@
             android:id="@+id/fav_button"
             android:layout_gravity="center_horizontal|bottom"
             android:checked="false"
-            android:layout_below="@+id/meteoInfo"
-            android:layout_centerHorizontal="true"
-            android:button="@drawable/fav_selector" />
+            android:button="@drawable/fav_selector"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/meteoInfo"
+            android:layout_toEndOf="@+id/meteoInfo" />
 
 
         <ImageView
@@ -70,9 +71,10 @@
             android:textSize="32sp"
             android:layout_toLeftOf="@+id/meteoInfo"
             android:layout_alignTop="@+id/meteoInfo"
-            android:layout_above="@+id/fav_button"
+
             android:layout_alignLeft="@+id/favorites"
-            android:layout_alignStart="@+id/favorites" />
+            android:layout_alignStart="@+id/favorites"
+            android:layout_alignBottom="@+id/meteoInfo" />
 
     </RelativeLayout>
 
