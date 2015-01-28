@@ -49,8 +49,8 @@ public class MeteoActivity extends ActionBarActivity  {
     private TextView temperature;
 
     // Latitude et longitude
-    private double latitude;
-    private double longitude;
+    private double latitude = 0;
+    private double longitude = 0;
 
     // Liste de favoris
     private ArrayList<String> favorites;
@@ -125,9 +125,7 @@ public class MeteoActivity extends ActionBarActivity  {
         MyLocation.LocationResult locationResult = new MyLocation.LocationResult() {
             @Override
             public void gotLocation(Location location) {
-                if (location == null) {
-                    meteoInfo.setText("Données GPS éronées");
-                } else {
+                if (location != null) {
                     longitude = location.getLongitude();
                     latitude = location.getLatitude();
                     displayMeteo("0", latitude, longitude);
@@ -139,6 +137,9 @@ public class MeteoActivity extends ActionBarActivity  {
 
         if(cityDisplay==null) {
             myLocation.getLocation(getApplicationContext(), locationResult);
+            if(longitude == 0 || latitude == 0){
+                meteoInfo.setText("Données GPS éronées");
+            }
         }
     }
 

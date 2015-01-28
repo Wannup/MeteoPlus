@@ -8,13 +8,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 
 
 public class CitiesActivity extends Activity {
 
-   ListView lvList = null;
+    ListView lvList = null;
+    SearchView sView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,24 @@ public class CitiesActivity extends Activity {
                 setResult(RESULT_OK, intent);
                 finish();
 
+            }
+        });
+
+        sView = (SearchView) findViewById(R.id.searchView);
+        sView.setSubmitButtonEnabled(true);
+        sView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Intent intent = new Intent();
+                intent.putExtra("city_selected", query);
+                setResult(RESULT_OK, intent);
+                finish();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
             }
         });
     }
