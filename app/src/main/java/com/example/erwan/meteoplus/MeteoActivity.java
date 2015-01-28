@@ -121,36 +121,26 @@ public class MeteoActivity extends ActionBarActivity  {
             }
         }
 
-        LocationManager mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, mLocationListener);
-
-        if(cityDisplay==null){
-            if(latitude != 0 || longitude != 0) {
-                displayMeteo("0", latitude, longitude);
-                //displayMeteo("0", 48.853409, 2.3488);
-            } else {
-                meteoInfo.setText("Données GPS éronées");
+        MyLocation myLocation;
+        MyLocation.LocationResult locationResult = new MyLocation.LocationResult() {
+            @Override
+            public void gotLocation(Location location) {
+                if (location == null) {
+                    meteoInfo.setText("Données GPS éronées");
+                } else {
+                    longitude = location.getLongitude();
+                    latitude = location.getLatitude();
+                    displayMeteo("0", latitude, longitude);
+                    //displayMeteo("0", 48.853409, 2.3488);
+                }
             }
-        }
+        };
+        myLocation = new MyLocation();
 
+        if(cityDisplay==null) {
+            myLocation.getLocation(getApplicationContext(), locationResult);
+        }
     }
-
-    private final LocationListener mLocationListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(final Location location) {
-            latitude = location.getLatitude();
-            longitude = location.getLongitude();
-        }
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {}
-
-        @Override
-        public void onProviderEnabled(String provider) {}
-
-        @Override
-        public void onProviderDisabled(String provider) {}
-    };
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
