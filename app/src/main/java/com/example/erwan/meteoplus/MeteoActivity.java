@@ -47,6 +47,7 @@ public class MeteoActivity extends ActionBarActivity  {
     private Button mCities;
     private ImageView weatherImg;
     private TextView temperature;
+    private TextView lastModified;
 
     // Latitude et longitude
     private double latitude = 0;
@@ -64,6 +65,9 @@ public class MeteoActivity extends ActionBarActivity  {
     // Ville affichée
     private String cityDisplay;
 
+    //reload time in minutes
+    private final static int RELOAD_TIME = 60;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +84,7 @@ public class MeteoActivity extends ActionBarActivity  {
         mFavorites = (Button) findViewById(R.id.favorites);
         mCities = (Button) findViewById(R.id.cities);
         temperature = (TextView) findViewById(R.id.tempView);
+        lastModified = (TextView) findViewById(R.id.textViewLastModified);
 
         sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         restoreFavorites();
@@ -171,7 +176,150 @@ public class MeteoActivity extends ActionBarActivity  {
     // Affichage de la Météo
     public void displayMeteo(String city, double lat, double lon) {
 
-        if(isNetworkAvailable()) {
+        Meteo meteo = null;
+        this.lastModified.setVisibility(View.INVISIBLE);
+        if(!city.equals("0")) {
+            meteo = new Meteo(city, this);
+            if (meteo.exist()) {
+                meteo.load();
+                if (!meteo.isValid(RELOAD_TIME) && isNetworkAvailable()) {
+                    getXmlWithCity(city);
+                    this.getLoadedMeteo(meteo);
+                    meteo.save();
+                } else {
+                    this.lastModified.setVisibility(View.VISIBLE);
+                    this.lastModified.setText("Modifier le : " + meteo.getDate());
+                }
+            } else if(isNetworkAvailable()) {
+                getXmlWithCity(city);
+                this.getLoadedMeteo(meteo);
+                meteo.save();
+            } else {
+                mFavButton.setVisibility(View.INVISIBLE);
+                weatherImg.setImageResource(0);
+                temperature.setText("");
+                meteoInfo.setText("Aucune connexion internet.");
+                meteo = null;
+            }
+        } else {
+            if(isNetworkAvailable()) {
+                getXmlWithLocation(lat, lon);
+                meteo = new Meteo(this.getCityName(), this);
+                this.getLoadedMeteo(meteo);
+                meteo.save();
+            } else {
+                mFavButton.setVisibility(View.INVISIBLE);
+                weatherImg.setImageResource(0);
+                temperature.setText("");
+                meteoInfo.setText("Aucune connexion internet.");
+                meteo = null;
+            }
+        }
+
+        if (meteo != null) {
+            // Affichage de l'image
+            switch (meteo.getWeather()) {
+                case "01d":
+                    weatherImg.setImageResource(R.drawable.sund);
+                    break;
+
+                case "01n":
+                    weatherImg.setImageResource(R.drawable.moonn);
+                    break;
+
+                case "02d":
+                    weatherImg.setImageResource(R.drawable.suncloud);
+                    break;
+
+                case "02n":
+                    weatherImg.setImageResource(R.drawable.mooncloud);
+                    break;
+
+                case "03d":
+                    weatherImg.setImageResource(R.drawable.cloud);
+                    break;
+
+                case "03n":
+                    weatherImg.setImageResource(R.drawable.cloud);
+                    break;
+
+                case "04d":
+                    weatherImg.setImageResource(R.drawable.darkcloud);
+                    break;
+
+                case "04n":
+                    weatherImg.setImageResource(R.drawable.darkcloud);
+                    break;
+
+                case "09d":
+                    weatherImg.setImageResource(R.drawable.rain);
+                    break;
+
+                case "09n":
+                    weatherImg.setImageResource(R.drawable.rain);
+                    break;
+
+                case "10d":
+                    weatherImg.setImageResource(R.drawable.suncloudrain);
+                    break;
+
+                case "10n":
+                    weatherImg.setImageResource(R.drawable.mooncloudrain);
+                    break;
+
+                case "11d":
+                    weatherImg.setImageResource(R.drawable.lightning);
+                    break;
+
+                case "11n":
+                    weatherImg.setImageResource(R.drawable.lightning);
+                    break;
+
+                case "13d":
+                    weatherImg.setImageResource(R.drawable.snow);
+                    break;
+
+                case "13n":
+                    weatherImg.setImageResource(R.drawable.snow);
+                    break;
+
+                case "50d":
+                    weatherImg.setImageResource(R.drawable.fog);
+                    break;
+
+                case "50n":
+                    weatherImg.setImageResource(R.drawable.fog);
+                    break;
+                default:
+                    weatherImg.setImageResource(0);
+                    break;
+            }
+
+            // Affichage de la température
+            if (meteo.getTemperature().charAt(0) == '-' && meteo.getTemperature().charAt(1) != '0') {
+                temperature.setText(meteo.getTemperature().charAt(0) + " " + meteo.getTemperature().charAt(1) + " °C");
+            } else {
+                if (meteo.getTemperature().charAt(1) == '0') {
+                    temperature.setText(meteo.getTemperature().charAt(1) + " °C");
+                } else {
+                    temperature.setText(meteo.getTemperature().charAt(0) + " °C");
+                }
+            }
+
+            meteoInfo.setText(Html.fromHtml("<b>" + meteo.getName() + "<br /><br /></br>" +
+                    "<small>Humidité: " + meteo.getHumidity() + " %<br /><br />" +
+                    "Pression: " + meteo.getPressure() + " hPa<br /><br />" +
+                    "Vitesse du vent: " + meteo.getSpeed() + " m/s</small>"));
+
+            if (checkItemInFavorites(city)) {
+                mFavButton.setChecked(true);
+            } else {
+                mFavButton.setChecked(false);
+            }
+        }
+
+
+        /*if(isNetworkAvailable()) {
             mFavButton.setVisibility(View.VISIBLE);
             mFavButton.setChecked(false);
 
@@ -295,7 +443,7 @@ public class MeteoActivity extends ActionBarActivity  {
             weatherImg.setImageResource(0);
             temperature.setText("");
             meteoInfo.setText("Aucune connexion internet.");
-        }
+        }*/
     }
 
     @Override
@@ -381,6 +529,15 @@ public class MeteoActivity extends ActionBarActivity  {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    private void getLoadedMeteo (Meteo meteo) {
+        meteo.setTemperature(this.getTemperature());
+        meteo.setWeather(this.getWeather());
+        meteo.setHumidity(this.getHumidity());
+        meteo.setPressure(this.getPressure());
+        meteo.setSpeed(this.getWindSpeed());
+        meteo.setDirection(this.getWindDirection());
     }
 
     public String getCityName(){
