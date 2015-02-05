@@ -28,6 +28,18 @@
             android:layout_centerHorizontal="true" />
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tempView"
+            android:textAlignment="center"
+            android:textSize="32sp"
+            android:layout_toLeftOf="@+id/weatherImg"
+            android:layout_above="@+id/favorites"
+            android:layout_alignTop="@+id/meteoInfo"
+            android:layout_alignLeft="@+id/favorites"
+            android:layout_alignStart="@+id/favorites" />
+
+        <TextView
             android:layout_width="281dp"
             android:layout_height="186dp"
             android:id="@+id/meteoInfo"
@@ -42,7 +54,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Favoris"
+            android:text="@string/favoris_button"
             android:id="@+id/favorites"
             android:layout_marginRight="40dp"
             android:layout_marginEnd="40dp"
@@ -50,28 +62,25 @@
             android:layout_toLeftOf="@+id/weatherImg"
             android:layout_toStartOf="@+id/weatherImg" />
 
+        <TextView
+            android:layout_width="230dp"
+            android:layout_height="50dp"
+            android:id="@+id/textViewLastModified"
+            android:textAlignment="center"
+            android:textSize="15sp"
+            android:layout_below="@+id/meteoInfo"
+            android:layout_toRightOf="@+id/favorites" />
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Villes"
+            android:text="@string/villes_button"
             android:id="@+id/cities"
             android:layout_below="@+id/meteoInfo"
             android:layout_alignLeft="@+id/meteoInfo"
             android:layout_alignStart="@+id/meteoInfo"
             android:layout_marginLeft="26dp"
             android:layout_marginStart="26dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tempView"
-            android:textAlignment="center"
-            android:textSize="32sp"
-            android:layout_toLeftOf="@+id/weatherImg"
-            android:layout_above="@+id/favorites"
-            android:layout_alignTop="@+id/meteoInfo"
-            android:layout_alignLeft="@+id/favorites"
-            android:layout_alignStart="@+id/favorites" />
 
     </RelativeLayout>
 

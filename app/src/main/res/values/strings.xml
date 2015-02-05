@@ -10,6 +10,8 @@
     <string name="action_settings">Settings</string>
     <string name="settings_title">Settings</string>
     <string name="title_activity_cities">CitiesActivity</string>
+    <string name="favoris_button">Favoris</string>
+    <string name="villes_button">Villes</string>
 
     <string-array name="city_array"></string-array>
 

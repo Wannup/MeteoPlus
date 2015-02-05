@@ -29,6 +29,19 @@
             android:layout_centerHorizontal="true" />
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tempView"
+            android:textAlignment="center"
+            android:textSize="32sp"
+            android:layout_toLeftOf="@+id/meteoInfo"
+            android:layout_alignTop="@+id/meteoInfo"
+
+            android:layout_alignLeft="@+id/favorites"
+            android:layout_alignStart="@+id/favorites"
+            android:layout_alignBottom="@+id/meteoInfo" />
+
+        <TextView
             android:layout_width="281dp"
             android:layout_height="186dp"
             android:id="@+id/meteoInfo"
@@ -52,7 +65,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Favoris"
+            android:text="@string/favoris_button"
             android:id="@+id/favorites"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
@@ -64,7 +77,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Villes"
+            android:text="@string/villes_button"
             android:id="@+id/cities"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
@@ -72,19 +85,6 @@
             android:layout_marginRight="65dp"
             android:layout_marginEnd="65dp"
             android:layout_marginBottom="44dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tempView"
-            android:textAlignment="center"
-            android:textSize="32sp"
-            android:layout_toLeftOf="@+id/meteoInfo"
-            android:layout_alignTop="@+id/meteoInfo"
-
-            android:layout_alignLeft="@+id/favorites"
-            android:layout_alignStart="@+id/favorites"
-            android:layout_alignBottom="@+id/meteoInfo" />
 
     </RelativeLayout>
 

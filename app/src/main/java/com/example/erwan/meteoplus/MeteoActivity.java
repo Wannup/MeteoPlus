@@ -40,6 +40,9 @@ public class MeteoActivity extends ActionBarActivity  {
     // Informations récupérées sur OpenWeather
     private Document doc;
 
+    // Meteo
+    private Meteo meteo;
+
     // Elements graphiques
     private TextView meteoInfo;
     private CheckBox mFavButton;
@@ -71,12 +74,7 @@ public class MeteoActivity extends ActionBarActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            setContentView(R.layout.activity_meteo_landscape);
-        } else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
-            setContentView(R.layout.activity_meteo);
-        }
+        setContentView(R.layout.activity_meteo);
 
         meteoInfo = (TextView) findViewById(R.id.meteoInfo);
         weatherImg = (ImageView) findViewById(R.id.weatherImg);
@@ -95,9 +93,9 @@ public class MeteoActivity extends ActionBarActivity  {
             @Override
             public void onClick(View v) {
                 if(mFavButton.isChecked()){
-                    addItemToFavorites(getCityName());
+                    addItemToFavorites(meteo.getName());
                 } else {
-                    deleteItemFromFavorites(getCityName());
+                    deleteItemFromFavorites(meteo.getName());
                 }
             }
         });
@@ -176,15 +174,16 @@ public class MeteoActivity extends ActionBarActivity  {
     // Affichage de la Météo
     public void displayMeteo(String city, double lat, double lon) {
 
-        Meteo meteo = null;
+        this.meteo = null;
         this.lastModified.setVisibility(View.INVISIBLE);
         if(!city.equals("0")) {
+            this.cityDisplay = city;
             meteo = new Meteo(city, this);
             if (meteo.exist()) {
                 meteo.load();
                 if (!meteo.isValid(RELOAD_TIME) && isNetworkAvailable()) {
                     getXmlWithCity(city);
-                    this.getLoadedMeteo(meteo);
+                    this.loadMeteo();
                     meteo.save();
                 } else {
                     this.lastModified.setVisibility(View.VISIBLE);
@@ -192,7 +191,7 @@ public class MeteoActivity extends ActionBarActivity  {
                 }
             } else if(isNetworkAvailable()) {
                 getXmlWithCity(city);
-                this.getLoadedMeteo(meteo);
+                this.loadMeteo();
                 meteo.save();
             } else {
                 mFavButton.setVisibility(View.INVISIBLE);
@@ -204,8 +203,8 @@ public class MeteoActivity extends ActionBarActivity  {
         } else {
             if(isNetworkAvailable()) {
                 getXmlWithLocation(lat, lon);
-                meteo = new Meteo(this.getCityName(), this);
-                this.getLoadedMeteo(meteo);
+                meteo = new Meteo(getString("name", getNode("city")), this);
+                this.loadMeteo();
                 meteo.save();
             } else {
                 mFavButton.setVisibility(View.INVISIBLE);
@@ -217,6 +216,8 @@ public class MeteoActivity extends ActionBarActivity  {
         }
 
         if (meteo != null) {
+            mFavButton.setVisibility(View.VISIBLE);
+            mFavButton.setChecked(false);
             // Affichage de l'image
             switch (meteo.getWeather()) {
                 case "01d":
@@ -531,16 +532,22 @@ public class MeteoActivity extends ActionBarActivity  {
         }
     }
 
-    private void getLoadedMeteo (Meteo meteo) {
-        meteo.setTemperature(this.getTemperature());
-        meteo.setWeather(this.getWeather());
-        meteo.setHumidity(this.getHumidity());
-        meteo.setPressure(this.getPressure());
-        meteo.setSpeed(this.getWindSpeed());
-        meteo.setDirection(this.getWindDirection());
+    private void loadMeteo () {
+        this.meteo.setTemperature(getString("value", getNode("temperature")));
+        this.meteo.setWeather(getString("icon", getNode("weather")));
+        this.meteo.setHumidity(getString("value", getNode("humidity")));
+        this.meteo.setPressure(getString("value", getNode("pressure")));
+        this.meteo.setSpeed(getString("value", getNode("speed")));
+        this.meteo.setDirection(getString("name", getNode("direction")));
     }
 
-    public String getCityName(){
+    public Element getNode (String name) {
+        NodeList entries = doc.getElementsByTagName(name);
+        Element node = (Element) entries.item(0);
+        return node;
+    }
+
+    /*public String getCityName(){
 
         NodeList entries = doc.getElementsByTagName("city");
 
@@ -603,7 +610,7 @@ public class MeteoActivity extends ActionBarActivity  {
         Element node = (Element) entries.item(0);
         return getString("name", node);
 
-    }
+    }*/
 
     protected String getString(String nAttr, Element element) {
 
