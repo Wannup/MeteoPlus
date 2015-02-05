@@ -132,7 +132,6 @@ public class MeteoActivity extends ActionBarActivity  {
                     longitude = location.getLongitude();
                     latitude = location.getLatitude();
                     displayMeteo("0", latitude, longitude);
-                    //displayMeteo("0", 48.853409, 2.3488);
                 }
             }
         };
@@ -318,133 +317,6 @@ public class MeteoActivity extends ActionBarActivity  {
                 mFavButton.setChecked(false);
             }
         }
-
-
-        /*if(isNetworkAvailable()) {
-            mFavButton.setVisibility(View.VISIBLE);
-            mFavButton.setChecked(false);
-
-            Log.w("log", city);
-            Log.w("log", "" + lat);
-            Log.w("log", "" + lon);
-
-            // Récupération des informations via le nom de la ville ou la location
-            if(!city.equals("0")) {
-                getXmlWithCity(city);
-            } else {
-                getXmlWithLocation(lat, lon);
-            }
-
-            if(doc != null) {
-
-                // Affichage de l'image
-                switch (getWeather()) {
-                    case "01d":
-                        weatherImg.setImageResource(R.drawable.sund);
-                        break;
-
-                    case "01n":
-                        weatherImg.setImageResource(R.drawable.moonn);
-                        break;
-
-                    case "02d":
-                        weatherImg.setImageResource(R.drawable.suncloud);
-                        break;
-
-                    case "02n":
-                        weatherImg.setImageResource(R.drawable.mooncloud);
-                        break;
-
-                    case "03d":
-                        weatherImg.setImageResource(R.drawable.cloud);
-                        break;
-
-                    case "03n":
-                        weatherImg.setImageResource(R.drawable.cloud);
-                        break;
-
-                    case "04d":
-                        weatherImg.setImageResource(R.drawable.darkcloud);
-                        break;
-
-                    case "04n":
-                        weatherImg.setImageResource(R.drawable.darkcloud);
-                        break;
-
-                    case "09d":
-                        weatherImg.setImageResource(R.drawable.rain);
-                        break;
-
-                    case "09n":
-                        weatherImg.setImageResource(R.drawable.rain);
-                        break;
-
-                    case "10d":
-                        weatherImg.setImageResource(R.drawable.suncloudrain);
-                        break;
-
-                    case "10n":
-                        weatherImg.setImageResource(R.drawable.mooncloudrain);
-                        break;
-
-                    case "11d":
-                        weatherImg.setImageResource(R.drawable.lightning);
-                        break;
-
-                    case "11n":
-                        weatherImg.setImageResource(R.drawable.lightning);
-                        break;
-
-                    case "13d":
-                        weatherImg.setImageResource(R.drawable.snow);
-                        break;
-
-                    case "13n":
-                        weatherImg.setImageResource(R.drawable.snow);
-                        break;
-
-                    case "50d":
-                        weatherImg.setImageResource(R.drawable.fog);
-                        break;
-
-                    case "50n":
-                        weatherImg.setImageResource(R.drawable.fog);
-                        break;
-                    default:
-                        weatherImg.setImageResource(0);
-                        break;
-                }
-
-                // Affichage de la température
-                if (getTemperature().charAt(0) == '-' && getTemperature().charAt(1) != '0') {
-                    temperature.setText(getTemperature().charAt(0) + " " + getTemperature().charAt(1) + " °C");
-                } else {
-                    if (getTemperature().charAt(1) == '0') {
-                        temperature.setText(getTemperature().charAt(1) + " °C");
-                    } else {
-                        temperature.setText(getTemperature().charAt(0) + " °C");
-                    }
-                }
-
-                meteoInfo.setText(Html.fromHtml("<b>" + getCityName() + "<br /><br /></br><small>Humidité: " + getHumidity() + " %<br /><br />Pression: " + getPressure() + " hPa<br /><br />Vitesse du vent: " + getWindSpeed() + " m/s</small>"));
-
-                if (checkItemInFavorites(city)) {
-                    mFavButton.setChecked(true);
-                } else {
-                    mFavButton.setChecked(false);
-                }
-            }else{
-                mFavButton.setVisibility(View.INVISIBLE);
-                weatherImg.setImageResource(0);
-                temperature.setText("");
-                meteoInfo.setText("Impossible de localiser.");
-            }
-        } else {
-            mFavButton.setVisibility(View.INVISIBLE);
-            weatherImg.setImageResource(0);
-            temperature.setText("");
-            meteoInfo.setText("Aucune connexion internet.");
-        }*/
     }
 
     @Override
@@ -494,7 +366,6 @@ public class MeteoActivity extends ActionBarActivity  {
         Map<String, String> map = (Map<String, String>) sharedPref.getAll();
         this.favorites = new ArrayList<String>(map.values());
     }
-
 
     /*
     Récupération des infos via xml
@@ -546,71 +417,6 @@ public class MeteoActivity extends ActionBarActivity  {
         Element node = (Element) entries.item(0);
         return node;
     }
-
-    /*public String getCityName(){
-
-        NodeList entries = doc.getElementsByTagName("city");
-
-        Element node = (Element) entries.item(0);
-
-        this.cityDisplay = getString("name", node);
-        return getString("name", node);
-
-    }
-
-    public String getTemperature(){
-
-        NodeList entries = doc.getElementsByTagName("temperature");
-
-        Element node = (Element) entries.item(0);
-        return getString("value", node);
-
-    }
-
-    public String getWeather(){
-
-        NodeList entries = doc.getElementsByTagName("weather");
-
-        Element node = (Element) entries.item(0);
-        return getString("icon", node);
-
-    }
-
-    public String getHumidity(){
-
-        NodeList entries = doc.getElementsByTagName("humidity");
-
-        Element node = (Element) entries.item(0);
-        return getString("value", node);
-
-    }
-
-    public String getPressure(){
-
-        NodeList entries = doc.getElementsByTagName("pressure");
-
-        Element node = (Element) entries.item(0);
-        return getString("value", node);
-
-    }
-
-    public String getWindSpeed(){
-
-        NodeList entries = doc.getElementsByTagName("speed");
-
-        Element node = (Element) entries.item(0);
-        return getString("value", node);
-
-    }
-
-    public String getWindDirection(){
-
-        NodeList entries = doc.getElementsByTagName("direction");
-
-        Element node = (Element) entries.item(0);
-        return getString("name", node);
-
-    }*/
 
     protected String getString(String nAttr, Element element) {
 
