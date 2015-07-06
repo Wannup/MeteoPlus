@@ -45,7 +45,6 @@ import java.util.concurrent.ExecutionException;
 
 public class MeteoPrevisionActivity extends FragmentActivity {
 
-    //private GestureDetectorCompat mDetector;
     DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
     ViewPager mViewPager;
 
@@ -68,16 +67,9 @@ public class MeteoPrevisionActivity extends FragmentActivity {
             this.meteoMutiple = this.getWeatherByCityForFiveDay(this.cityDisplay);
         }
 
-        //mDetector = new GestureDetectorCompat(this, new MyGestureListener());
         mDemoCollectionPagerAdapter = new DemoCollectionPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mDemoCollectionPagerAdapter);
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event){
-        //this.mDetector.onTouchEvent(event);
-        return super.onTouchEvent(event);
     }
 
     public void getXmlWithCityForFiveDay(String city){
@@ -117,9 +109,8 @@ public class MeteoPrevisionActivity extends FragmentActivity {
             Node to = nodeMap.getNamedItem("to");
             Date toDate = this.getDate(to);
             DayTime dayTime = DayTime.getDayTime(fromDate, toDate);
-            if (previousDayTime == null) {
-                previousDayTime = dayTime;
-            } else if (previousDayTime != dayTime) {
+            System.out.println("dayTime : " + dayTime);
+            if (previousDayTime != null && previousDayTime != dayTime) {
                 Meteo meteo = new Meteo(city, this);
                 meteo.setTemperature(temperature);
                 meteo.setDirection(direction);
@@ -167,22 +158,6 @@ public class MeteoPrevisionActivity extends FragmentActivity {
             return null;
         }
     }
-
-    /*class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
-        private static final String DEBUG_TAG = "Gestures";
-
-        @Override
-        public boolean onDown(MotionEvent event) {
-            Log.d(DEBUG_TAG, "onDown: " + event.toString());
-            return true;
-        }
-
-        @Override
-        public boolean onFling(MotionEvent event1, MotionEvent event2, float velocityX, float velocityY) {
-            Log.d(DEBUG_TAG, "onFling: " + event1.toString()+event2.toString());
-            return true;
-        }
-    }*/
 
     public class DemoCollectionPagerAdapter extends FragmentStatePagerAdapter {
         public DemoCollectionPagerAdapter(FragmentManager fm) {

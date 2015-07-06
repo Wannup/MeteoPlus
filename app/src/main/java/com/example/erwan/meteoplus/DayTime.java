@@ -20,7 +20,7 @@ public enum DayTime {
             case SOIR:
                 return "Soir";
             case NUIT:
-                return "Soir";
+                return "Nuit";
             default:
                 return "";
         }
@@ -30,8 +30,8 @@ public enum DayTime {
         Calendar calendarFrom = Calendar.getInstance();
         calendarFrom.setTime(from);
         Calendar calendarTo = Calendar.getInstance();
-        calendarTo.setTime(from);
-        int hour = calendarFrom.get(Calendar.HOUR);
+        calendarTo.setTime(to);
+        int hour = calendarFrom.get(Calendar.HOUR_OF_DAY);
         if (hour < 6) {
             return NUIT;
         } else if (hour < 12) {
@@ -42,6 +42,5 @@ public enum DayTime {
             return SOIR;
         }
     }
-
 
 }
