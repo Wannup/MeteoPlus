@@ -93,6 +93,7 @@ public class MeteoPrevisionActivity extends FragmentActivity {
         MeteoMutiple meteoMutiple = new MeteoMutiple(this);
         NodeList entries = doc.getElementsByTagName("time");
         DayTime previousDayTime = null;
+        Date todayDate = null;
         String temperature = "";
         String weather = "";
         String humidity = "";
@@ -118,7 +119,10 @@ public class MeteoPrevisionActivity extends FragmentActivity {
                 meteo.setPressure(pressure);
                 meteo.setHumidity(humidity);
                 meteo.setWeather(weather);
-                meteoMutiple.setMeteo(fromDate, previousDayTime, meteo);
+                if (todayDate == null || previousDayTime == DayTime.NUIT) {
+                    todayDate = fromDate;
+                }
+                meteoMutiple.setMeteo(todayDate, previousDayTime, meteo);
                 if (this.currentDate == null) {
                     this.currentDate = fromDate;
                 }
@@ -167,13 +171,14 @@ public class MeteoPrevisionActivity extends FragmentActivity {
         @Override
         public Fragment getItem(int i) {
             MeteoPrevisionFragment fragment = new MeteoPrevisionFragment();
+            currentDayTime = meteoMutiple.getDayTime(currentDate, i);
             fragment.put(currentDate, currentDayTime, meteoMutiple.getMeteo(currentDate, currentDayTime), MeteoPrevisionActivity.this);
             return fragment;
         }
 
         @Override
         public int getCount() {
-            return 4;
+            return meteoMutiple.size(currentDate);
         }
 
         @Override

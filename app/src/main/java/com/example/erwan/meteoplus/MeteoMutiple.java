@@ -39,6 +39,14 @@ public class MeteoMutiple {
         this.map = new HashMap<>();
     }
 
+    public DayTime getDayTime (Date date, int i) {
+        return (DayTime) this.map.get(date).keySet().toArray()[i];
+    }
+
+    public int size (Date date) {
+        return this.map.get(date).size();
+    }
+
     public Meteo getMeteo (Date date, DayTime dayTime) {
         if (!this.map.containsKey(date)) {
             return null;
