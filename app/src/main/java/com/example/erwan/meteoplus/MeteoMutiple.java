@@ -40,7 +40,19 @@ public class MeteoMutiple {
     }
 
     public DayTime getDayTime (Date date, int i) {
-        return (DayTime) this.map.get(date).keySet().toArray()[i];
+        int value = 4 + i - this.size(date);
+        switch (value) {
+            case 0:
+                return DayTime.NUIT;
+            case 1:
+                return DayTime.MATIN;
+            case 2:
+                return DayTime.APRES_MIDI;
+            case 3:
+                return DayTime.SOIR;
+        }
+        return null;
+        //return (DayTime) this.map.get(date).keySet().toArray()[i];
     }
 
     public int size (Date date) {

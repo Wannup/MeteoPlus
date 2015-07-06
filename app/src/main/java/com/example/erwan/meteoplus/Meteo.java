@@ -19,6 +19,9 @@ public class Meteo {
 
     private final String name;
     private String temperature;
+    private String min;
+    private String max;
+    private String units;
     private String weather;
     private String humidity;
     private String pressure;
@@ -54,6 +57,30 @@ public class Meteo {
 
     public void setTemperature(String temperature) {
         this.temperature = temperature;
+    }
+
+    public String getMax() {
+        return max;
+    }
+
+    public void setMax(String max) {
+        this.max = max;
+    }
+
+    public String getMin() {
+        return min;
+    }
+
+    public void setMin(String min) {
+        this.min = min;
+    }
+
+    public String getUnits() {
+        return units;
+    }
+
+    public void setUnits(String units) {
+        this.units = units;
     }
 
     public String getWeather() {

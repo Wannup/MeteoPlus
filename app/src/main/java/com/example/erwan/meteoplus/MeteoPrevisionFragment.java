@@ -47,12 +47,16 @@ public class MeteoPrevisionFragment extends Fragment {
         TextView textViewDate = (TextView) view.findViewById(R.id.textViewDate);
         ImageView imageViewWeather = (ImageView) view.findViewById(R.id.imageView);
         TextView textViewTemperature = (TextView) view.findViewById(R.id.textViewTemperature);
+        TextView textViewMin = (TextView) view.findViewById(R.id.textViewMin);
+        TextView textViewmax = (TextView) view.findViewById(R.id.textViewMax);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         String day = Utils.getStringDay(calendar.get(Calendar.DAY_OF_WEEK));
         textViewDate.setText(day + " (" + dayTime.toString() + ")");
-        imageViewWeather.setImageResource(R.drawable.sund);
-        textViewTemperature.setText(meteo.getTemperature());
+        imageViewWeather.setImageResource(Utils.getImageByWeather(meteo.getWeather()));
+        textViewTemperature.setText(meteo.getTemperature() + " " + meteo.getUnits());
+        textViewMin.setText("Min : " + meteo.getMin() + " " + meteo.getUnits());
+        textViewmax.setText("Max : " + meteo.getMax() + " " + meteo.getUnits());
         return view;
     }
 

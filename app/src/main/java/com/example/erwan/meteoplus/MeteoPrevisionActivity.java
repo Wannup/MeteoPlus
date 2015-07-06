@@ -130,32 +130,71 @@ public class MeteoPrevisionActivity extends FragmentActivity {
         NodeList entries = doc.getElementsByTagName("time");
         DayTime previousDayTime = null;
         Date todayDate = null;
-        String temperature = "";
+        Double temperature = 0.0;
         String weather = "";
         String humidity = "";
         String pressure = "";
         String speed = "";
         String direction = "";
-        String min = "";
-        String max = "";
-        for (int i = 0 ; i < entries.getLength() ; i++) {
-            Node node = entries.item(i);
-            NamedNodeMap nodeMap = node.getAttributes();
-            Node from = nodeMap.getNamedItem("from");
-            Date fromDate = this.getDate(from);
-            Node to = nodeMap.getNamedItem("to");
-            Date toDate = this.getDate(to);
+        Double min = Double.MAX_VALUE;
+        Double max = Double.MIN_VALUE;
+        int nbValue = 0;
+        Node node = entries.item(0);
+        NamedNodeMap nodeMap = node.getAttributes();
+        Node from = nodeMap.getNamedItem("from");
+        Date fromDate = this.getDate(from);
+        Node to = nodeMap.getNamedItem("to");
+        Date toDate = this.getDate(to);
+        previousDayTime = DayTime.getDayTime(fromDate, toDate);
+        NodeList nodeList = node.getChildNodes();
+        for (int j = 0 ; j < nodeList.getLength() ; j++) {
+            Node child = nodeList.item(j);
+            if (child.getNodeName().equals("temperature")) {
+                NamedNodeMap attributes = child.getAttributes();
+                Node value = attributes.getNamedItem("value");
+                temperature += Double.parseDouble(value.getNodeValue());
+                System.out.println("value : " + temperature);
+                Node minNode = attributes.getNamedItem("min");
+                double minTmp = Double.parseDouble(minNode.getNodeValue());
+                if (minTmp < min) {
+                    min = minTmp;
+                }
+                System.out.println("min : " + min);
+                Node maxNode = attributes.getNamedItem("max");
+                double maxTmp = Double.parseDouble(maxNode.getNodeValue());
+                if (maxTmp > max) {
+                    max = maxTmp;
+                }
+                System.out.println("max : " + max);
+                nbValue++;
+            } else if (child.getNodeName().equals("symbol")) {
+                NamedNodeMap attributes = child.getAttributes();
+                Node value = attributes.getNamedItem("var");
+                weather = value.getNodeValue();
+            }
+        }
+        for (int i = 1 ; i < entries.getLength() ; i++) {
+            node = entries.item(i);
+            nodeMap = node.getAttributes();
+            from = nodeMap.getNamedItem("from");
+            fromDate = this.getDate(from);
+            to = nodeMap.getNamedItem("to");
+            toDate = this.getDate(to);
             DayTime dayTime = DayTime.getDayTime(fromDate, toDate);
             System.out.println("dayTime : " + dayTime);
             if (previousDayTime != null && previousDayTime != dayTime) {
                 Meteo meteo = new Meteo(city, this);
-                meteo.setTemperature(temperature);
+                temperature = temperature / nbValue;
+                meteo.setTemperature(String.valueOf(temperature.intValue()));
+                meteo.setMin(String.valueOf(min.intValue()));
+                meteo.setMax(String.valueOf(max.intValue()));
                 meteo.setDirection(direction);
                 meteo.setSpeed(speed);
                 meteo.setPressure(pressure);
                 meteo.setHumidity(humidity);
                 meteo.setWeather(weather);
-                if (todayDate == null || previousDayTime == DayTime.NUIT) {
+                meteo.setUnits("°C");
+                if (todayDate == null || dayTime == DayTime.NUIT) {
                     todayDate = fromDate;
                     this.dates.add(todayDate);
                 }
@@ -166,22 +205,37 @@ public class MeteoPrevisionActivity extends FragmentActivity {
                 if (this.currentDayTime == null) {
                     this.currentDayTime = previousDayTime;
                 }
+                temperature = 0.0;
+                min = Double.MAX_VALUE;
+                max = Double.MIN_VALUE;
+                nbValue = 0;
             }
             previousDayTime = dayTime;
-            NodeList nodeList = node.getChildNodes();
+            nodeList = node.getChildNodes();
             for (int j = 0 ; j < nodeList.getLength() ; j++) {
                 Node child = nodeList.item(j);
                 if (child.getNodeName().equals("temperature")) {
                     NamedNodeMap attributes = child.getAttributes();
                     Node value = attributes.getNamedItem("value");
-                    temperature = value.getNodeValue();
+                    temperature += Double.parseDouble(value.getNodeValue());
                     System.out.println("value : " + temperature);
                     Node minNode = attributes.getNamedItem("min");
-                    min = minNode.getNodeValue();
+                    double minTmp = Double.parseDouble(minNode.getNodeValue());
+                    if (minTmp < min) {
+                        min = minTmp;
+                    }
                     System.out.println("min : " + min);
                     Node maxNode = attributes.getNamedItem("max");
-                    max = maxNode.getNodeValue();
+                    double maxTmp = Double.parseDouble(maxNode.getNodeValue());
+                    if (maxTmp > max) {
+                        max = maxTmp;
+                    }
                     System.out.println("max : " + max);
+                    nbValue++;
+                } else if (child.getNodeName().equals("symbol")) {
+                    NamedNodeMap attributes = child.getAttributes();
+                    Node value = attributes.getNamedItem("var");
+                    weather = value.getNodeValue();
                 }
             }
         }

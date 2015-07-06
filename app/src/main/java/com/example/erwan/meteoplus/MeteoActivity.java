@@ -238,91 +238,16 @@ public class MeteoActivity extends ActionBarActivity  {
             mFavButton.setVisibility(View.VISIBLE);
             mFavButton.setChecked(false);
             // Affichage de l'image
-            switch (meteo.getWeather()) {
-                case "01d":
-                    weatherImg.setImageResource(R.drawable.sund);
-                    break;
-
-                case "01n":
-                    weatherImg.setImageResource(R.drawable.moonn);
-                    break;
-
-                case "02d":
-                    weatherImg.setImageResource(R.drawable.suncloud);
-                    break;
-
-                case "02n":
-                    weatherImg.setImageResource(R.drawable.mooncloud);
-                    break;
-
-                case "03d":
-                    weatherImg.setImageResource(R.drawable.cloud);
-                    break;
-
-                case "03n":
-                    weatherImg.setImageResource(R.drawable.cloud);
-                    break;
-
-                case "04d":
-                    weatherImg.setImageResource(R.drawable.darkcloud);
-                    break;
-
-                case "04n":
-                    weatherImg.setImageResource(R.drawable.darkcloud);
-                    break;
-
-                case "09d":
-                    weatherImg.setImageResource(R.drawable.rain);
-                    break;
-
-                case "09n":
-                    weatherImg.setImageResource(R.drawable.rain);
-                    break;
-
-                case "10d":
-                    weatherImg.setImageResource(R.drawable.suncloudrain);
-                    break;
-
-                case "10n":
-                    weatherImg.setImageResource(R.drawable.mooncloudrain);
-                    break;
-
-                case "11d":
-                    weatherImg.setImageResource(R.drawable.lightning);
-                    break;
-
-                case "11n":
-                    weatherImg.setImageResource(R.drawable.lightning);
-                    break;
-
-                case "13d":
-                    weatherImg.setImageResource(R.drawable.snow);
-                    break;
-
-                case "13n":
-                    weatherImg.setImageResource(R.drawable.snow);
-                    break;
-
-                case "50d":
-                    weatherImg.setImageResource(R.drawable.fog);
-                    break;
-
-                case "50n":
-                    weatherImg.setImageResource(R.drawable.fog);
-                    break;
-                default:
-                    weatherImg.setImageResource(0);
-                    break;
-            }
+            weatherImg.setImageResource(Utils.getImageByWeather(meteo.getWeather()));
 
             // Affichage de la température
             if (meteo.getTemperature().charAt(0) == '-' && meteo.getTemperature().charAt(1) != '0') {
                 temperature.setText(meteo.getTemperature().charAt(0) + " " + meteo.getTemperature().charAt(1) + " °C");
             } else {
                 if (meteo.getTemperature().charAt(1) == '0') {
-                    temperature.setText(meteo.getTemperature().charAt(1) + " °C");
+                    temperature.setText(meteo.getTemperature().charAt(1) + " " + meteo.getUnits());
                 } else {
-                    temperature.setText(meteo.getTemperature().charAt(0) + " °C");
+                    temperature.setText(meteo.getTemperature().charAt(0) + " " + meteo.getUnits());
                 }
             }
 
@@ -439,6 +364,7 @@ public class MeteoActivity extends ActionBarActivity  {
         this.meteo.setPressure(getString("value", getNode("pressure")));
         this.meteo.setSpeed(getString("value", getNode("speed")));
         this.meteo.setDirection(getString("name", getNode("direction")));
+        this.meteo.setUnits("°C");
     }
 
     public Element getNode (String name) {
