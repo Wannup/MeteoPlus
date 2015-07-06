@@ -22,9 +22,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +41,9 @@ import org.w3c.dom.NodeList;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -48,6 +53,7 @@ public class MeteoPrevisionActivity extends FragmentActivity {
     DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
     ViewPager mViewPager;
 
+    private List<Date> dates;
     private Date currentDate;
     private DayTime currentDayTime;
     MeteoMutiple meteoMutiple;
@@ -61,11 +67,41 @@ public class MeteoPrevisionActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meteo_prevision);
 
+        this.dates = new ArrayList<>();
         Bundle b = getIntent().getExtras();
         if(b.containsKey("city")) {
             this.cityDisplay = b.getString("city");
             this.meteoMutiple = this.getWeatherByCityForFiveDay(this.cityDisplay);
         }
+        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        List<String> list = new ArrayList<String>();
+        Calendar calendar = Calendar.getInstance();
+        for (Date date : dates) {
+            calendar.setTime(date);
+            list.add(Utils.getStringDay(calendar.get(Calendar.DAY_OF_WEEK)));
+        }
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,list);
+        // Specify the layout to use when the list of choices appears
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(dataAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                currentDate = dates.get(position);
+                mDemoCollectionPagerAdapter = new DemoCollectionPagerAdapter(getSupportFragmentManager());
+                mViewPager = (ViewPager) findViewById(R.id.pager);
+                mViewPager.setAdapter(mDemoCollectionPagerAdapter);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
 
         mDemoCollectionPagerAdapter = new DemoCollectionPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -121,6 +157,7 @@ public class MeteoPrevisionActivity extends FragmentActivity {
                 meteo.setWeather(weather);
                 if (todayDate == null || previousDayTime == DayTime.NUIT) {
                     todayDate = fromDate;
+                    this.dates.add(todayDate);
                 }
                 meteoMutiple.setMeteo(todayDate, previousDayTime, meteo);
                 if (this.currentDate == null) {

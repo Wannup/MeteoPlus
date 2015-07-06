@@ -49,7 +49,7 @@ public class MeteoPrevisionFragment extends Fragment {
         TextView textViewTemperature = (TextView) view.findViewById(R.id.textViewTemperature);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        String day = this.getStringDay(calendar.get(Calendar.DAY_OF_WEEK));
+        String day = Utils.getStringDay(calendar.get(Calendar.DAY_OF_WEEK));
         textViewDate.setText(day + " (" + dayTime.toString() + ")");
         imageViewWeather.setImageResource(R.drawable.sund);
         textViewTemperature.setText(meteo.getTemperature());
@@ -60,27 +60,6 @@ public class MeteoPrevisionFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         Log.v("MyFragment", "onDestroy");
-    }
-
-    private String getStringDay (int day) {
-        switch (day) {
-            case Calendar.MONDAY :
-                return "Lundi";
-            case Calendar.TUESDAY :
-                return "Mardi";
-            case Calendar.WEDNESDAY :
-                return "Mercredi";
-            case Calendar.THURSDAY :
-                return "Jeudi";
-            case Calendar.FRIDAY :
-                return "Vendredi";
-            case Calendar.SATURDAY :
-                return "Samedi";
-            case Calendar.SUNDAY :
-                return "Dimanche";
-            default:
-                return "";
-        }
     }
 
 }
