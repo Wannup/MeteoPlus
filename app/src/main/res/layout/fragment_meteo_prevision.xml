@@ -1,10 +1,30 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.erwan.meteoplus.MeteoPrevisionFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewDate"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"/>
 
-</FrameLayout>
+    <ImageView
+        android:layout_width="174dp"
+        android:layout_height="174dp"
+        android:id="@+id/imageView"
+        android:layout_below="@+id/textViewDate"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewTemperature"
+        android:layout_below="@+id/imageView"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

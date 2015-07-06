@@ -24,9 +24,14 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -48,6 +53,7 @@ public class MeteoActivity extends ActionBarActivity  {
     private CheckBox mFavButton;
     private Button mFavorites;
     private Button mCities;
+    private Button previsionButton;
     private ImageView weatherImg;
     private TextView temperature;
     private TextView lastModified;
@@ -81,6 +87,7 @@ public class MeteoActivity extends ActionBarActivity  {
         mFavButton = (CheckBox) findViewById(R.id.fav_button);
         mFavorites = (Button) findViewById(R.id.favorites);
         mCities = (Button) findViewById(R.id.cities);
+        previsionButton = (Button) findViewById(R.id.previsionButton);
         temperature = (TextView) findViewById(R.id.tempView);
         lastModified = (TextView) findViewById(R.id.textViewLastModified);
 
@@ -114,6 +121,15 @@ public class MeteoActivity extends ActionBarActivity  {
             public void onClick(View v) {
                 Intent intentMain = new Intent(MeteoActivity.this, CitiesActivity.class);
                 startActivityForResult(intentMain, 1);
+            }
+        });
+
+        previsionButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MeteoActivity.this, MeteoPrevisionActivity.class);
+                intent.putExtra("city", cityDisplay);
+                startActivity(intent);
             }
         });
 
@@ -182,35 +198,39 @@ public class MeteoActivity extends ActionBarActivity  {
                 meteo.load();
                 if (!meteo.isValid(RELOAD_TIME) && isNetworkAvailable()) {
                     getXmlWithCity(city);
-                    this.loadMeteo();
-                    meteo.save();
+                    if (this.doc != null) {
+                        this.loadMeteo();
+                        meteo.save();
+                    } else {
+                        this.noInternetConnexion();
+                    }
                 } else {
                     this.lastModified.setVisibility(View.VISIBLE);
                     this.lastModified.setText("Modifier le : " + meteo.getDate());
                 }
             } else if(isNetworkAvailable()) {
                 getXmlWithCity(city);
-                this.loadMeteo();
-                meteo.save();
+                if (this.doc != null) {
+                    this.loadMeteo();
+                    meteo.save();
+                } else {
+                    this.noInternetConnexion();
+                }
             } else {
-                mFavButton.setVisibility(View.INVISIBLE);
-                weatherImg.setImageResource(0);
-                temperature.setText("");
-                meteoInfo.setText("Aucune connexion internet.");
-                meteo = null;
+                this.noInternetConnexion();
             }
         } else {
             if(isNetworkAvailable()) {
                 getXmlWithLocation(lat, lon);
-                meteo = new Meteo(getString("name", getNode("city")), this);
-                this.loadMeteo();
-                meteo.save();
+                if (this.doc != null) {
+                    meteo = new Meteo(getString("name", getNode("city")), this);
+                    this.loadMeteo();
+                    meteo.save();
+                } else {
+                    this.noInternetConnexion();
+                }
             } else {
-                mFavButton.setVisibility(View.INVISIBLE);
-                weatherImg.setImageResource(0);
-                temperature.setText("");
-                meteoInfo.setText("Aucune connexion internet.");
-                meteo = null;
+                this.noInternetConnexion();
             }
         }
 
@@ -317,6 +337,15 @@ public class MeteoActivity extends ActionBarActivity  {
                 mFavButton.setChecked(false);
             }
         }
+    }
+
+    private void noInternetConnexion () {
+        mFavButton.setVisibility(View.INVISIBLE);
+        previsionButton.setVisibility(View.INVISIBLE);
+        weatherImg.setImageResource(0);
+        temperature.setText("");
+        meteoInfo.setText("Aucune connexion internet.");
+        meteo = null;
     }
 
     @Override

@@ -47,4 +47,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(drop_tables);
         onCreate(db);
     }
+
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        String drop_tables = "DROP TABLE IF EXISTS "+ TABLE_METEO +";";
+        db.execSQL(drop_tables);
+        onCreate(db);
+    }
 }

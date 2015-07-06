@@ -82,6 +82,19 @@
             android:layout_marginLeft="26dp"
             android:layout_marginStart="26dp" />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Prévisions"
+            android:id="@+id/previsionButton"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="130dp"
+            android:layout_marginEnd="65dp"
+            android:layout_marginBottom="44dp" />
+
     </RelativeLayout>
 
     <!-- android:layout_gravity="start" tells DrawerLayout to treat
