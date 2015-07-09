@@ -41,6 +41,9 @@ public class MeteoMutiple {
 
     public DayTime getDayTime (Date date, int i) {
         int value = 4 + i - this.size(date);
+        System.out.println("i = " + i);
+        System.out.println("this.size(date) = " + this.size(date));
+        System.out.println("value = " + value);
         switch (value) {
             case 0:
                 return DayTime.NUIT;
@@ -52,7 +55,6 @@ public class MeteoMutiple {
                 return DayTime.SOIR;
         }
         return null;
-        //return (DayTime) this.map.get(date).keySet().toArray()[i];
     }
 
     public int size (Date date) {

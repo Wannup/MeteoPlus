@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -15,7 +16,7 @@ import java.util.logging.Logger;
 /**
  * Created by mike on 04/02/2015.
  */
-public class Meteo {
+public class Meteo implements Serializable {
 
     private final String name;
     private String temperature;

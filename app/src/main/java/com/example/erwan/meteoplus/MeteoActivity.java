@@ -1,18 +1,14 @@
 package com.example.erwan.meteoplus;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -24,19 +20,14 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 
-public class MeteoActivity extends ActionBarActivity  {
+public class MeteoActivity extends Activity {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -67,9 +58,6 @@ public class MeteoActivity extends ActionBarActivity  {
 
     // Sauvegarde des favoris
     private SharedPreferences sharedPref;
-
-    // Etat de l'orientation du téléphone
-    private int orientation;
 
     // Ville affichée
     private String cityDisplay;
@@ -156,7 +144,7 @@ public class MeteoActivity extends ActionBarActivity  {
         if(cityDisplay==null) {
             myLocation.getLocation(getApplicationContext(), locationResult);
             if(longitude == 0 || latitude == 0){
-                meteoInfo.setText("Données GPS éronées");
+                meteoInfo.setText(getResources().getString(R.string.error_gps));
             }
         }
     }
@@ -180,15 +168,13 @@ public class MeteoActivity extends ActionBarActivity  {
 
     // On vérifie que l'on est connecté à internet
     private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     // Affichage de la Météo
     public void displayMeteo(String city, double lat, double lon) {
-
         this.meteo = null;
         this.lastModified.setVisibility(View.INVISIBLE);
         if(!city.equals("0")) {
@@ -206,7 +192,7 @@ public class MeteoActivity extends ActionBarActivity  {
                     }
                 } else {
                     this.lastModified.setVisibility(View.VISIBLE);
-                    this.lastModified.setText("Modifier le : " + meteo.getDate());
+                    this.lastModified.setText(getResources().getString(R.string.modify_the, meteo.getDate()));
                 }
             } else if(isNetworkAvailable()) {
                 getXmlWithCity(city);
@@ -236,19 +222,21 @@ public class MeteoActivity extends ActionBarActivity  {
 
         if (meteo != null) {
             mFavButton.setVisibility(View.VISIBLE);
+            previsionButton.setVisibility(View.VISIBLE);
             mFavButton.setChecked(false);
             // Affichage de l'image
             weatherImg.setImageResource(Utils.getImageByWeather(meteo.getWeather()));
 
             // Affichage de la température
             if (meteo.getTemperature().charAt(0) == '-' && meteo.getTemperature().charAt(1) != '0') {
-                temperature.setText(meteo.getTemperature().charAt(0) + " " + meteo.getTemperature().charAt(1) + " °C");
+                temperature.setText(meteo.getTemperature().charAt(0) + " " + meteo.getTemperature().substring(1) + " °C");
             } else {
-                if (meteo.getTemperature().charAt(1) == '0') {
+                temperature.setText(meteo.getTemperature() + " " + meteo.getUnits());
+                /*if (meteo.getTemperature().charAt(1) == '0') {
                     temperature.setText(meteo.getTemperature().charAt(1) + " " + meteo.getUnits());
                 } else {
                     temperature.setText(meteo.getTemperature().charAt(0) + " " + meteo.getUnits());
-                }
+                }*/
             }
 
             meteoInfo.setText(Html.fromHtml("<b>" + meteo.getName() + "<br /><br /></br>" +
@@ -269,7 +257,7 @@ public class MeteoActivity extends ActionBarActivity  {
         previsionButton.setVisibility(View.INVISIBLE);
         weatherImg.setImageResource(0);
         temperature.setText("");
-        meteoInfo.setText("Aucune connexion internet.");
+        meteoInfo.setText(getResources().getString(R.string.no_internet_connexion));
         meteo = null;
     }
 
@@ -282,17 +270,17 @@ public class MeteoActivity extends ActionBarActivity  {
         // Sauvegarde des favoris pour qu'ils soit disponible à la prochaine ouverture
         for(int i=0; i<favorites.size();i++){
             editor.putString(favorites.get(i), favorites.get(i));
-            editor.commit();
+            editor.apply();
         }
     }
 
     public void addItemToFavorites(String name) {
-        Toast.makeText(this, "Ville ajoutée aux favoris", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getResources().getString(R.string.city_add_to_favorites), Toast.LENGTH_SHORT).show();
         favorites.add(name);
     }
 
     public void deleteItemFromFavorites(String name) {
-        Toast.makeText(this, "Ville supprimée des favoris", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getResources().getString(R.string.city_remove_from_favorites), Toast.LENGTH_SHORT).show();
         boolean exist = false;
         int i = 0;
         while (!exist && i < favorites.size()) {
@@ -332,12 +320,8 @@ public class MeteoActivity extends ActionBarActivity  {
         RetrieveWeatherXml xml = new RetrieveWeatherXml();
         try {
             this.doc = xml.execute(urlCityMeteo).get();
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch (InterruptedException | ExecutionException e) {
+            this.doc = null;
         }
     }
 
@@ -348,12 +332,8 @@ public class MeteoActivity extends ActionBarActivity  {
         RetrieveWeatherXml xml = new RetrieveWeatherXml();
         try {
             this.doc = xml.execute(urlCityMeteo).get();
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch (InterruptedException | ExecutionException e) {
+            this.doc = null;
         }
     }
 
@@ -364,13 +344,12 @@ public class MeteoActivity extends ActionBarActivity  {
         this.meteo.setPressure(getString("value", getNode("pressure")));
         this.meteo.setSpeed(getString("value", getNode("speed")));
         this.meteo.setDirection(getString("name", getNode("direction")));
-        this.meteo.setUnits("°C");
+        this.meteo.setUnits(getResources().getString(R.string.celsius));
     }
 
     public Element getNode (String name) {
         NodeList entries = doc.getElementsByTagName(name);
-        Element node = (Element) entries.item(0);
-        return node;
+        return (Element) entries.item(0);
     }
 
     protected String getString(String nAttr, Element element) {
@@ -389,6 +368,6 @@ public class MeteoActivity extends ActionBarActivity  {
             }
         }
 
-        return "Aucune infos";
+        return getResources().getString(R.string.no_information);
     }
 }

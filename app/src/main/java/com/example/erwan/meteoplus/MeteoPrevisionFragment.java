@@ -1,10 +1,9 @@
 package com.example.erwan.meteoplus;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,7 @@ public class MeteoPrevisionFragment extends Fragment {
     private Meteo meteo;
     private Activity activity;
 
-    public void put (Date date, DayTime dayTime, Meteo meteo, Activity activity) {
+    public void put (Date date, DayTime dayTime, Meteo meteo) {
         this.date = date;
         this.dayTime = dayTime;
         this.meteo = meteo;
@@ -31,39 +30,43 @@ public class MeteoPrevisionFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         this.activity = activity;
-        Log.v("MyFragment", "onAttach");
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Log.v("MyFragment", "onCreate");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.v("MyFragment", "onCreateView");
+        if(savedInstanceState != null){
+            this.date = (Date) savedInstanceState.getSerializable("date");
+            this.dayTime = (DayTime) savedInstanceState.getSerializable("dayTime");
+            this.meteo = (Meteo) savedInstanceState.getSerializable("meteo");
+        }
         View view = inflater.inflate(R.layout.fragment_meteo_prevision, container, false);
         TextView textViewDate = (TextView) view.findViewById(R.id.textViewDate);
         ImageView imageViewWeather = (ImageView) view.findViewById(R.id.imageView);
         TextView textViewTemperature = (TextView) view.findViewById(R.id.textViewTemperature);
         TextView textViewMin = (TextView) view.findViewById(R.id.textViewMin);
-        TextView textViewmax = (TextView) view.findViewById(R.id.textViewMax);
+        TextView textViewMax = (TextView) view.findViewById(R.id.textViewMax);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        String day = Utils.getStringDay(calendar.get(Calendar.DAY_OF_WEEK));
-        textViewDate.setText(day + " (" + dayTime.toString() + ")");
+        String day = Utils.getStringDay(calendar.get(Calendar.DAY_OF_WEEK), this.activity);
+        textViewDate.setText(day + " (" + dayTime.toString(this.activity) + ")");
         imageViewWeather.setImageResource(Utils.getImageByWeather(meteo.getWeather()));
         textViewTemperature.setText(meteo.getTemperature() + " " + meteo.getUnits());
-        textViewMin.setText("Min : " + meteo.getMin() + " " + meteo.getUnits());
-        textViewmax.setText("Max : " + meteo.getMax() + " " + meteo.getUnits());
+        textViewMin.setText(this.activity.getResources().getString(R.string.min, meteo.getMin(), meteo.getUnits()));
+        textViewMax.setText(this.activity.getResources().getString(R.string.max, meteo.getMax(), meteo.getUnits()));
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putSerializable("date", this.date);
+        savedInstanceState.putSerializable("dayTime", this.dayTime);
+        savedInstanceState.putSerializable("meteo", this.meteo);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        Log.v("MyFragment", "onDestroy");
     }
 
 }

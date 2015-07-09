@@ -1,5 +1,7 @@
 package com.example.erwan.meteoplus;
 
+import android.content.Context;
+
 import java.util.Calendar;
 
 /**
@@ -7,22 +9,22 @@ import java.util.Calendar;
  */
 public class Utils {
 
-    public static String getStringDay (int day) {
+    public static String getStringDay (int day, Context context) {
         switch (day) {
             case Calendar.MONDAY :
-                return "Lundi";
+                return context.getResources().getString(R.string.monday);
             case Calendar.TUESDAY :
-                return "Mardi";
+                return context.getResources().getString(R.string.tuesday);
             case Calendar.WEDNESDAY :
-                return "Mercredi";
+                return context.getResources().getString(R.string.wednesdayY);
             case Calendar.THURSDAY :
-                return "Jeudi";
+                return context.getResources().getString(R.string.thursday);
             case Calendar.FRIDAY :
-                return "Vendredi";
+                return context.getResources().getString(R.string.friday);
             case Calendar.SATURDAY :
-                return "Samedi";
+                return context.getResources().getString(R.string.saturday);
             case Calendar.SUNDAY :
-                return "Dimanche";
+                return context.getResources().getString(R.string.sunday);
             default:
                 return "";
         }

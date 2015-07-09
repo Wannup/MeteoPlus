@@ -1,5 +1,7 @@
 package com.example.erwan.meteoplus;
 
+import android.content.Context;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -10,17 +12,16 @@ public enum DayTime {
 
     MATIN, APRES_MIDI, SOIR, NUIT;
 
-    @Override
-    public String toString() {
+    public String toString(Context context) {
         switch (this) {
             case MATIN:
-                return "Matin";
+                return context.getResources().getString(R.string.morning);
             case APRES_MIDI:
-                return "Après-midi";
+                return context.getResources().getString(R.string.afternoon);
             case SOIR:
-                return "Soir";
+                context.getResources().getString(R.string.evening);
             case NUIT:
-                return "Nuit";
+                return context.getResources().getString(R.string.night);
             default:
                 return "";
         }
