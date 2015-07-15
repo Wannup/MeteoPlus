@@ -16,9 +16,8 @@
     <string-array name="city_array" />
 
     <string name="title_activity_favorites">FavoritesActivity</string>
-    <string name="hello_world">Hello world!</string>
     <string name="title_activity_meteo_prevision">MeteoPrevisionActivity</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_cities_activity">Villes suggérées</string>
 
     <string name="monday">Lundi</string>
     <string name="tuesday">Mardi</string>
@@ -46,5 +45,7 @@
     <string name="city_remove_from_favorites">Ville supprimée des favoriss</string>
 
     <string name="celsius">°C</string>
+
+    <string name="action_search">Recherche</string>
 
 </resources>

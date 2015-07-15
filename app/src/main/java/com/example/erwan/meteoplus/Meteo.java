@@ -33,14 +33,16 @@ public class Meteo implements Serializable {
     private SQLiteDatabase database;
     private DatabaseHandler databaseHandler;
     private String[] allColumns = {
-            DatabaseHandler.TABLE_METEO_COLUMN_NAME,
-            DatabaseHandler.TABLE_METEO_COLUMN_TEMPERATURE,
-            DatabaseHandler.TABLE_METEO_COLUMN_WEATHER,
-            DatabaseHandler.TABLE_METEO_COLUMN_HUMIDITY,
-            DatabaseHandler.TABLE_METEO_COLUMN_PRESSURE,
-            DatabaseHandler.TABLE_METEO_COLUMN_SPEED,
-            DatabaseHandler.TABLE_METEO_COLUMN_DIRECTION,
-            DatabaseHandler.TABLE_METEO_COLUMN_DATE
+        DatabaseHandler.TABLE_METEO_COLUMN_NAME,
+        DatabaseHandler.TABLE_METEO_COLUMN_TEMPERATURE,
+        DatabaseHandler.TABLE_METEO_COLUMN_WEATHER,
+        DatabaseHandler.TABLE_METEO_COLUMN_HUMIDITY,
+        DatabaseHandler.TABLE_METEO_COLUMN_PRESSURE,
+        DatabaseHandler.TABLE_METEO_COLUMN_SPEED,
+        DatabaseHandler.TABLE_METEO_COLUMN_DIRECTION,
+        DatabaseHandler.TABLE_METEO_COLUMN_DAY,
+        DatabaseHandler.TABLE_METEO_COLUMN_DAYTIME,
+        DatabaseHandler.TABLE_METEO_COLUMN_DATE
     };
 
     public Meteo(String name, Context context) {
@@ -141,6 +143,10 @@ public class Meteo implements Serializable {
     }
 
     public void save () {
+        this.save(null, null);
+    }
+
+    public void save (Date day, DayTime dayTime) {
         this.open();
         this.date = new Date();
         ContentValues values = new ContentValues();
@@ -151,14 +157,27 @@ public class Meteo implements Serializable {
         values.put(DatabaseHandler.TABLE_METEO_COLUMN_PRESSURE, this.pressure);
         values.put(DatabaseHandler.TABLE_METEO_COLUMN_SPEED, this.speed);
         values.put(DatabaseHandler.TABLE_METEO_COLUMN_DIRECTION, this.direction);
-        values.put(DatabaseHandler.TABLE_METEO_COLUMN_DATE, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS").format(this.date));
+        values.put(DatabaseHandler.TABLE_METEO_COLUMN_UNIT, this.units);
+        if (day == null) {
+            values.putNull(DatabaseHandler.TABLE_METEO_COLUMN_DAY);
+        } else {
+            values.put(DatabaseHandler.TABLE_METEO_COLUMN_DAY, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(day));
+        }
+        if (dayTime == null) {
+            values.putNull(DatabaseHandler.TABLE_METEO_COLUMN_DAYTIME);
+        } else {
+            values.put(DatabaseHandler.TABLE_METEO_COLUMN_DAYTIME, dayTime.name());
+        }
+        values.put(DatabaseHandler.TABLE_METEO_COLUMN_DATE, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(this.date));
         this.database.insert(DatabaseHandler.TABLE_METEO, null, values);
         this.close();
     }
 
     public void delete () {
         this.open();
-        this.database.delete(DatabaseHandler.TABLE_METEO, DatabaseHandler.TABLE_METEO_COLUMN_NAME + " = '" + this.name +"'", null);
+        this.database.delete(DatabaseHandler.TABLE_METEO,
+            DatabaseHandler.TABLE_METEO_COLUMN_NAME + " = '" + this.name + "'" +
+            " AND "+DatabaseHandler.TABLE_METEO_COLUMN_DAY + " IS NULL", null);
         this.close();
     }
 
@@ -166,7 +185,8 @@ public class Meteo implements Serializable {
         if (exist()) {
             this.open();
             Cursor cursor = database.query(DatabaseHandler.TABLE_METEO, allColumns,
-                    DatabaseHandler.TABLE_METEO_COLUMN_NAME + " = '" + this.name +"'", null, null, null, null);
+                    DatabaseHandler.TABLE_METEO_COLUMN_NAME + " = '" + this.name +"'" +
+                    " AND "+DatabaseHandler.TABLE_METEO_COLUMN_DAY+" IS NULL", null, null, null, null);
             cursor.moveToFirst();
             this.temperature = cursor.getString(cursor.getColumnIndex(DatabaseHandler.TABLE_METEO_COLUMN_TEMPERATURE));
             this.weather = cursor.getString(cursor.getColumnIndex(DatabaseHandler.TABLE_METEO_COLUMN_WEATHER));
@@ -174,10 +194,11 @@ public class Meteo implements Serializable {
             this.pressure = cursor.getString(cursor.getColumnIndex(DatabaseHandler.TABLE_METEO_COLUMN_PRESSURE));
             this.speed = cursor.getString(cursor.getColumnIndex(DatabaseHandler.TABLE_METEO_COLUMN_SPEED));
             this.direction = cursor.getString(cursor.getColumnIndex(DatabaseHandler.TABLE_METEO_COLUMN_DIRECTION));
+            this.units = cursor.getString(cursor.getColumnIndex(DatabaseHandler.TABLE_METEO_COLUMN_UNIT));
             String dateString = cursor.getString(cursor.getColumnIndex(DatabaseHandler.TABLE_METEO_COLUMN_DATE));
             this.date = null;
             try {
-                this.date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS").parse(dateString);
+                this.date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateString);
             } catch (ParseException ex) {
                 Logger.getLogger(Meteo.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -189,7 +210,8 @@ public class Meteo implements Serializable {
     public boolean exist () {
         this.open();
         Cursor cursor = database.query(DatabaseHandler.TABLE_METEO, allColumns,
-                DatabaseHandler.TABLE_METEO_COLUMN_NAME + " = '" + this.name +"'", null, null, null, null);
+            DatabaseHandler.TABLE_METEO_COLUMN_NAME + " = '" + this.name +"'" +
+            " AND "+DatabaseHandler.TABLE_METEO_COLUMN_DAY+" IS NULL", null, null, null, null);
         boolean exist = cursor.getCount() == 1;
         cursor.close();
         this.close();

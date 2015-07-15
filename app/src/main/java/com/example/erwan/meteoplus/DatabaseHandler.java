@@ -17,10 +17,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String TABLE_METEO_COLUMN_PRESSURE = "pressure";
     public static final String TABLE_METEO_COLUMN_SPEED = "speed";
     public static final String TABLE_METEO_COLUMN_DIRECTION = "direction";
+    public static final String TABLE_METEO_COLUMN_UNIT = "unit";
+    public static final String TABLE_METEO_COLUMN_DAY = "day";
+    public static final String TABLE_METEO_COLUMN_DAYTIME = "daytime";
     public static final String TABLE_METEO_COLUMN_DATE = "date";
 
     private static final String DATABASE_NAME = "meteoplus.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -36,8 +39,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 TABLE_METEO_COLUMN_PRESSURE + " TEXT NOT NULL," +
                 TABLE_METEO_COLUMN_SPEED + " TEXT NOT NULL," +
                 TABLE_METEO_COLUMN_DIRECTION + " TEXT NOT NULL," +
+                TABLE_METEO_COLUMN_UNIT + " TEXT NOT NULL," +
+                TABLE_METEO_COLUMN_DAY + " TEXT NOT NULL," +
+                TABLE_METEO_COLUMN_DAYTIME + " TEXT NOT NULL," +
                 TABLE_METEO_COLUMN_DATE + " TEXT NOT NULL" +
-        ");";
+                ");";
         db.execSQL(tableMeteo);
     }
 
