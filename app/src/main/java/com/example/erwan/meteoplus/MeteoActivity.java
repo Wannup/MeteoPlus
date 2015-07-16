@@ -185,10 +185,11 @@ public class MeteoActivity extends Activity {
                 if (!meteo.isValid(RELOAD_TIME) && isNetworkAvailable()) {
                     getXmlWithCity(city);
                     if (this.doc != null) {
+                        meteo.delete();
                         this.loadMeteo();
                         meteo.save();
                     } else {
-                        this.noInternetConnexion();
+                        this.cityNotExists(city);
                     }
                 } else {
                     this.lastModified.setVisibility(View.VISIBLE);
@@ -200,7 +201,7 @@ public class MeteoActivity extends Activity {
                     this.loadMeteo();
                     meteo.save();
                 } else {
-                    this.noInternetConnexion();
+                    this.cityNotExists(city);
                 }
             } else {
                 this.noInternetConnexion();
@@ -213,7 +214,7 @@ public class MeteoActivity extends Activity {
                     this.loadMeteo();
                     meteo.save();
                 } else {
-                    this.noInternetConnexion();
+                    this.cityNotExists(city);
                 }
             } else {
                 this.noInternetConnexion();
@@ -229,7 +230,7 @@ public class MeteoActivity extends Activity {
 
             // Affichage de la température
             if (meteo.getTemperature().charAt(0) == '-' && meteo.getTemperature().charAt(1) != '0') {
-                temperature.setText(meteo.getTemperature().charAt(0) + " " + meteo.getTemperature().substring(1) + " °C");
+                temperature.setText(meteo.getTemperature().charAt(0) + " " + meteo.getTemperature().substring(1) + meteo.getUnits());
             } else {
                 temperature.setText(meteo.getTemperature() + " " + meteo.getUnits());
                 /*if (meteo.getTemperature().charAt(1) == '0') {
@@ -258,6 +259,15 @@ public class MeteoActivity extends Activity {
         weatherImg.setImageResource(0);
         temperature.setText("");
         meteoInfo.setText(getResources().getString(R.string.no_internet_connexion));
+        meteo = null;
+    }
+
+    private void cityNotExists (String name) {
+        mFavButton.setVisibility(View.INVISIBLE);
+        previsionButton.setVisibility(View.INVISIBLE);
+        weatherImg.setImageResource(0);
+        temperature.setText("");
+        meteoInfo.setText(getResources().getString(R.string.city_not_exists, name));
         meteo = null;
     }
 

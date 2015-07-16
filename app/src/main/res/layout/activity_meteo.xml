@@ -89,7 +89,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Prévisions"
+            android:text="@string/prevision_button"
             android:id="@+id/previsionButton"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"

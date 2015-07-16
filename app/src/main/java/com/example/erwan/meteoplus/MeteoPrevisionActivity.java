@@ -86,8 +86,6 @@ public class MeteoPrevisionActivity extends FragmentActivity {
             }
         });
 
-
-
         mDemoCollectionPagerAdapter = new DemoCollectionPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mDemoCollectionPagerAdapter);

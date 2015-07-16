@@ -23,7 +23,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String TABLE_METEO_COLUMN_DATE = "date";
 
     private static final String DATABASE_NAME = "meteoplus.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -32,7 +32,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String tableMeteo = "CREATE TABLE "+ TABLE_METEO +" (" +
-                TABLE_METEO_COLUMN_NAME + " TEXT PRIMARY KEY," +
+                TABLE_METEO_COLUMN_NAME + " TEXT NOT NULL," +
                 TABLE_METEO_COLUMN_TEMPERATURE + " TEXT NOT NULL," +
                 TABLE_METEO_COLUMN_WEATHER + " TEXT NOT NULL," +
                 TABLE_METEO_COLUMN_HUMIDITY + " TEXT NOT NULL," +
@@ -40,8 +40,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 TABLE_METEO_COLUMN_SPEED + " TEXT NOT NULL," +
                 TABLE_METEO_COLUMN_DIRECTION + " TEXT NOT NULL," +
                 TABLE_METEO_COLUMN_UNIT + " TEXT NOT NULL," +
-                TABLE_METEO_COLUMN_DAY + " TEXT NOT NULL," +
-                TABLE_METEO_COLUMN_DAYTIME + " TEXT NOT NULL," +
+                TABLE_METEO_COLUMN_DAY + " TEXT," +
+                TABLE_METEO_COLUMN_DAYTIME + " TEXT," +
                 TABLE_METEO_COLUMN_DATE + " TEXT NOT NULL" +
                 ");";
         db.execSQL(tableMeteo);
