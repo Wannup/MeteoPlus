@@ -1,5 +1,6 @@
 package com.example.erwan.meteoplus;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +25,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -65,6 +68,7 @@ public class MeteoActivity extends Activity {
     //reload time in minutes
     private final static int RELOAD_TIME = 60;
 
+    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +82,10 @@ public class MeteoActivity extends Activity {
         previsionButton = (Button) findViewById(R.id.previsionButton);
         temperature = (TextView) findViewById(R.id.tempView);
         lastModified = (TextView) findViewById(R.id.textViewLastModified);
+        RelativeLayout layout = (RelativeLayout) findViewById(R.id.container);
+        Date date = new Date();
+        DayTime dayTime = DayTime.getDayTime(date, date);
+        layout.setBackground(getResources().getDrawable(Utils.getBackground(dayTime)));
 
         sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         restoreFavorites();

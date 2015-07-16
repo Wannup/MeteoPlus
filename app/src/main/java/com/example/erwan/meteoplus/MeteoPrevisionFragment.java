@@ -1,5 +1,6 @@
 package com.example.erwan.meteoplus;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -31,6 +32,7 @@ public class MeteoPrevisionFragment extends Fragment {
         this.activity = activity;
     }
 
+    @SuppressLint("NewApi")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if(savedInstanceState != null){
@@ -52,6 +54,7 @@ public class MeteoPrevisionFragment extends Fragment {
         textViewTemperature.setText(meteo.getTemperature() + " " + meteo.getUnits());
         textViewMin.setText(this.activity.getResources().getString(R.string.min, meteo.getMin(), meteo.getUnits()));
         textViewMax.setText(this.activity.getResources().getString(R.string.max, meteo.getMax(), meteo.getUnits()));
+        view.setBackground(getResources().getDrawable(Utils.getBackground(dayTime)));
         return view;
     }
 

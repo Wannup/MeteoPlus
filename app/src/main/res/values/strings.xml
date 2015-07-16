@@ -34,7 +34,7 @@
 
     <string name="error_gps">Bad GPS data</string>
     <string name="no_internet_connexion">No internet connexion.</string>
-    <string name="city_not_exists">City %1$ Does not exists.</string>
+    <string name="city_not_exists">City %1$s Does not exists.</string>
     <string name="no_information">No information.</string>
 
     <string name="modify_the">Modify the : %1$s</string>

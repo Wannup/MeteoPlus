@@ -34,7 +34,7 @@
 
     <string name="error_gps">Données GPS éronées</string>
     <string name="no_internet_connexion">Aucune connexion internet.</string>
-    <string name="city_not_exists">La ville %1$ n\'existe pas.</string>
+    <string name="city_not_exists">La ville %1$s n\'existe pas.</string>
     <string name="no_information">Aucune infos.</string>
 
     <string name="modify_the">Modifier le : %1$s</string>

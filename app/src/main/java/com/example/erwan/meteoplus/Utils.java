@@ -72,4 +72,19 @@ public class Utils {
                 return 0;
         }
     }
+
+    public static int getBackground (DayTime dayTime) {
+        switch (dayTime) {
+            case NUIT:
+                return R.drawable.nuit;
+            case MATIN:
+                return R.drawable.matin;
+            case APRES_MIDI:
+                return R.drawable.journee;
+            case SOIR:
+                return R.drawable.soir;
+            default:
+                return 0;
+        }
+    }
 }

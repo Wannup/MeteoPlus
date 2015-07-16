@@ -1,113 +1,94 @@
-<!-- A DrawerLayout is intended to be used as the top-level content view using match_parent for both width and height to consume the full space available. -->
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:id="@+id/drawer_layout"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    tools:context=".MeteoActivity">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <!-- As the main content view, the view below consumes the entire
-         space available using match_parent in both dimensions. -->
-    <RelativeLayout android:id="@+id/container" android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="71dp"
+        android:id="@+id/fav_button"
+        android:checked="false"
+        android:button="@drawable/fav_selector"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/cities"
+        android:layout_toEndOf="@+id/cities" />
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="71dp"
-            android:text=""
-            android:id="@+id/fav_button"
-            android:checked="false"
-            android:button="@drawable/fav_selector"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/cities"
-            android:layout_toEndOf="@+id/cities" />
+    <ImageView
+        android:layout_width="174dp"
+        android:layout_height="174dp"
+        android:id="@+id/weatherImg"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
-        <ImageView
-            android:layout_width="174dp"
-            android:layout_height="174dp"
-            android:id="@+id/weatherImg"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tempView"
+        android:textAlignment="center"
+        android:textSize="32sp"
+        android:textColor="#FFFFFF"
+        android:layout_toLeftOf="@+id/weatherImg"
+        android:layout_above="@+id/favorites"
+        android:layout_alignTop="@+id/meteoInfo"
+        android:layout_alignLeft="@+id/favorites"
+        android:layout_alignStart="@+id/favorites" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tempView"
-            android:textAlignment="center"
-            android:textSize="32sp"
-            android:layout_toLeftOf="@+id/weatherImg"
-            android:layout_above="@+id/favorites"
-            android:layout_alignTop="@+id/meteoInfo"
-            android:layout_alignLeft="@+id/favorites"
-            android:layout_alignStart="@+id/favorites" />
+    <TextView
+        android:layout_width="281dp"
+        android:layout_height="186dp"
+        android:id="@+id/meteoInfo"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textColor="#FFFFFF"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/weatherImg"
+        android:layout_toEndOf="@+id/weatherImg"
+        android:layout_marginLeft="33dp"
+        android:layout_marginStart="33dp" />
 
-        <TextView
-            android:layout_width="281dp"
-            android:layout_height="186dp"
-            android:id="@+id/meteoInfo"
-            android:textAlignment="center"
-            android:textSize="18sp"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/weatherImg"
-            android:layout_toEndOf="@+id/weatherImg"
-            android:layout_marginLeft="33dp"
-            android:layout_marginStart="33dp" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/favoris_button"
+        android:id="@+id/favorites"
+        android:layout_marginRight="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_below="@+id/meteoInfo"
+        android:layout_toLeftOf="@+id/weatherImg"
+        android:layout_toStartOf="@+id/weatherImg" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/favoris_button"
-            android:id="@+id/favorites"
-            android:layout_marginRight="40dp"
-            android:layout_marginEnd="40dp"
-            android:layout_below="@+id/meteoInfo"
-            android:layout_toLeftOf="@+id/weatherImg"
-            android:layout_toStartOf="@+id/weatherImg" />
+    <TextView
+        android:layout_width="230dp"
+        android:layout_height="50dp"
+        android:id="@+id/textViewLastModified"
+        android:textAlignment="center"
+        android:textSize="15sp"
+        android:textColor="#FFFFFF"
+        android:layout_below="@+id/meteoInfo"
+        android:layout_toRightOf="@+id/favorites" />
 
-        <TextView
-            android:layout_width="230dp"
-            android:layout_height="50dp"
-            android:id="@+id/textViewLastModified"
-            android:textAlignment="center"
-            android:textSize="15sp"
-            android:layout_below="@+id/meteoInfo"
-            android:layout_toRightOf="@+id/favorites" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/villes_button"
+        android:id="@+id/cities"
+        android:layout_below="@+id/meteoInfo"
+        android:layout_alignLeft="@+id/meteoInfo"
+        android:layout_alignStart="@+id/meteoInfo"
+        android:layout_marginLeft="26dp"
+        android:layout_marginStart="26dp" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/villes_button"
-            android:id="@+id/cities"
-            android:layout_below="@+id/meteoInfo"
-            android:layout_alignLeft="@+id/meteoInfo"
-            android:layout_alignStart="@+id/meteoInfo"
-            android:layout_marginLeft="26dp"
-            android:layout_marginStart="26dp" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/prevision_button"
+        android:id="@+id/previsionButton"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="130dp"
+        android:layout_marginEnd="65dp"
+        android:layout_marginBottom="44dp" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Prévisions"
-            android:id="@+id/previsionButton"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginRight="130dp"
-            android:layout_marginEnd="65dp"
-            android:layout_marginBottom="44dp" />
-
-    </RelativeLayout>
-
-    <!-- android:layout_gravity="start" tells DrawerLayout to treat
-         this as a sliding drawer on the left side for left-to-right
-         languages and on the right side for right-to-left languages.
-         If you're not building against API 17 or higher, use
-         android:layout_gravity="left" instead. -->
-    <!-- The drawer is given a fixed width in dp and extends the full height of
-         the container.
-    <fragment android:id="@+id/navigation_drawer"
-        android:layout_width="@dimen/navigation_drawer_width" android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:name="com.example.erwan.meteoplus.NavigationDrawerFragment"
-        tools:layout="@layout/fragment_navigation_drawer" />-->
-
-</android.support.v4.widget.DrawerLayout>
+</RelativeLayout>

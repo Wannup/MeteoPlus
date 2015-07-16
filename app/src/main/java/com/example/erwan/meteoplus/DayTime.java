@@ -5,9 +5,6 @@ import android.content.Context;
 import java.util.Calendar;
 import java.util.Date;
 
-/**
- * Created by mike on 03/07/2015.
- */
 public enum DayTime {
 
     MATIN, APRES_MIDI, SOIR, NUIT;
@@ -19,7 +16,7 @@ public enum DayTime {
             case APRES_MIDI:
                 return context.getResources().getString(R.string.afternoon);
             case SOIR:
-                context.getResources().getString(R.string.evening);
+                return context.getResources().getString(R.string.evening);
             case NUIT:
                 return context.getResources().getString(R.string.night);
             default:

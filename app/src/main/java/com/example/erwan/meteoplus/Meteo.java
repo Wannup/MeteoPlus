@@ -40,6 +40,7 @@ public class Meteo implements Serializable {
         DatabaseHandler.TABLE_METEO_COLUMN_PRESSURE,
         DatabaseHandler.TABLE_METEO_COLUMN_SPEED,
         DatabaseHandler.TABLE_METEO_COLUMN_DIRECTION,
+        DatabaseHandler.TABLE_METEO_COLUMN_UNIT,
         DatabaseHandler.TABLE_METEO_COLUMN_DAY,
         DatabaseHandler.TABLE_METEO_COLUMN_DAYTIME,
         DatabaseHandler.TABLE_METEO_COLUMN_DATE
