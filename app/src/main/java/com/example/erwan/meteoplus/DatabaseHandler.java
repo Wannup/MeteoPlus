@@ -12,6 +12,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String TABLE_METEO = "meteo";
     public static final String TABLE_METEO_COLUMN_NAME = "name";
     public static final String TABLE_METEO_COLUMN_TEMPERATURE = "temperature";
+    public static final String TABLE_METEO_COLUMN_MIN = "min";
+    public static final String TABLE_METEO_COLUMN_MAX = "max";
     public static final String TABLE_METEO_COLUMN_WEATHER = "weather";
     public static final String TABLE_METEO_COLUMN_HUMIDITY = "humidity";
     public static final String TABLE_METEO_COLUMN_PRESSURE = "pressure";
@@ -23,7 +25,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String TABLE_METEO_COLUMN_DATE = "date";
 
     private static final String DATABASE_NAME = "meteoplus.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -34,6 +36,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String tableMeteo = "CREATE TABLE "+ TABLE_METEO +" (" +
                 TABLE_METEO_COLUMN_NAME + " TEXT NOT NULL," +
                 TABLE_METEO_COLUMN_TEMPERATURE + " TEXT NOT NULL," +
+                TABLE_METEO_COLUMN_MIN + " TEXT NOT NULL," +
+                TABLE_METEO_COLUMN_MAX + " TEXT NOT NULL," +
                 TABLE_METEO_COLUMN_WEATHER + " TEXT NOT NULL," +
                 TABLE_METEO_COLUMN_HUMIDITY + " TEXT NOT NULL," +
                 TABLE_METEO_COLUMN_PRESSURE + " TEXT NOT NULL," +

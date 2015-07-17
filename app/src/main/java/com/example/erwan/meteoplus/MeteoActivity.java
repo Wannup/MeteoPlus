@@ -249,9 +249,9 @@ public class MeteoActivity extends Activity {
             }
 
             meteoInfo.setText(Html.fromHtml("<b>" + meteo.getName() + "<br /><br /></br>" +
-                    "<small>Humidité: " + meteo.getHumidity() + " %<br /><br />" +
-                    "Pression: " + meteo.getPressure() + " hPa<br /><br />" +
-                    "Vitesse du vent: " + meteo.getSpeed() + " m/s</small>"));
+                    "<small>" + getResources().getString(R.string.text_humidity, meteo.getHumidity()) + " %<br /><br />" +
+                    "" + getResources().getString(R.string.text_pression, meteo.getPressure()) + " <br /><br />" +
+                    "" + getResources().getString(R.string.text_wind, meteo.getSpeed()) + " </small>"));
 
             if (checkItemInFavorites(city)) {
                 mFavButton.setChecked(true);

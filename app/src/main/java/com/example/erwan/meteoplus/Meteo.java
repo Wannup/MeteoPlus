@@ -51,6 +51,8 @@ public class Meteo implements Serializable {
         this.name = name;
         this.databaseHandler = new DatabaseHandler(context);
         this.isLoaded = false;
+        this.min = "0";
+        this.max = "0";
     }
 
     public String getName () {
@@ -159,6 +161,8 @@ public class Meteo implements Serializable {
         ContentValues values = new ContentValues();
         values.put(DatabaseHandler.TABLE_METEO_COLUMN_NAME, this.name);
         values.put(DatabaseHandler.TABLE_METEO_COLUMN_TEMPERATURE, this.temperature);
+        values.put(DatabaseHandler.TABLE_METEO_COLUMN_MIN, this.min);
+        values.put(DatabaseHandler.TABLE_METEO_COLUMN_MAX, this.max);
         values.put(DatabaseHandler.TABLE_METEO_COLUMN_WEATHER, this.weather);
         values.put(DatabaseHandler.TABLE_METEO_COLUMN_HUMIDITY, this.humidity);
         values.put(DatabaseHandler.TABLE_METEO_COLUMN_PRESSURE, this.pressure);

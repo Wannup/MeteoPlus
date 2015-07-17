@@ -69,11 +69,33 @@ public class MeteoPrevisionActivity extends FragmentActivity {
                     this.dates = this.meteoMutiple.getDates();
                     this.currentDate = this.dates.get(0);
                 }
+                this.init();
             } else {
-                this.meteoMutiple = this.getWeatherByCityForFiveDay(this.cityDisplay);
-                this.meteoMutiple.save();
+                if (isNetworkAvailable()) {
+                    this.meteoMutiple = this.getWeatherByCityForFiveDay(this.cityDisplay);
+                    this.meteoMutiple.save();
+                    this.init();
+                } else {
+                    TextView textViewText = (TextView) findViewById(R.id.textViewText);
+                    textViewText.setText(getResources().getString(R.string.no_internet_connexion));
+                    TextView textViewCity = (TextView) findViewById(R.id.textViewCity);
+                    textViewCity.setText(this.cityDisplay);
+                }
             }
         }
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //Save the fragment's instance
+        getSupportFragmentManager().putFragment(outState, "fragment", currentFragment);
+    }
+
+    private void init () {
+        TextView textViewText = (TextView) findViewById(R.id.textViewText);
+        textViewText.setVisibility(View.INVISIBLE);
         TextView textViewCity = (TextView) findViewById(R.id.textViewCity);
         textViewCity.setText(this.cityDisplay);
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
@@ -107,13 +129,6 @@ public class MeteoPrevisionActivity extends FragmentActivity {
         mDemoCollectionPagerAdapter = new DemoCollectionPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mDemoCollectionPagerAdapter);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        //Save the fragment's instance
-        getSupportFragmentManager().putFragment(outState, "fragment", currentFragment);
     }
 
     // On vérifie que l'on est connecté à internet

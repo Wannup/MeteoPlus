@@ -31,6 +31,8 @@ public class MeteoMutiple {
     private String[] allColumns = {
             DatabaseHandler.TABLE_METEO_COLUMN_NAME,
             DatabaseHandler.TABLE_METEO_COLUMN_TEMPERATURE,
+            DatabaseHandler.TABLE_METEO_COLUMN_MIN,
+            DatabaseHandler.TABLE_METEO_COLUMN_MAX,
             DatabaseHandler.TABLE_METEO_COLUMN_WEATHER,
             DatabaseHandler.TABLE_METEO_COLUMN_HUMIDITY,
             DatabaseHandler.TABLE_METEO_COLUMN_PRESSURE,
@@ -139,6 +141,8 @@ public class MeteoMutiple {
                 Meteo meteo = new Meteo(this.name, this.context);
 
                 String temperature = cursor.getString(cursor.getColumnIndex(DatabaseHandler.TABLE_METEO_COLUMN_TEMPERATURE));
+                String min = cursor.getString(cursor.getColumnIndex(DatabaseHandler.TABLE_METEO_COLUMN_MIN));
+                String max = cursor.getString(cursor.getColumnIndex(DatabaseHandler.TABLE_METEO_COLUMN_MAX));
                 String weather = cursor.getString(cursor.getColumnIndex(DatabaseHandler.TABLE_METEO_COLUMN_WEATHER));
                 String humidity = cursor.getString(cursor.getColumnIndex(DatabaseHandler.TABLE_METEO_COLUMN_HUMIDITY));
                 String pressure = cursor.getString(cursor.getColumnIndex(DatabaseHandler.TABLE_METEO_COLUMN_PRESSURE));
@@ -155,13 +159,13 @@ public class MeteoMutiple {
                 String daytime = cursor.getString(cursor.getColumnIndex(DatabaseHandler.TABLE_METEO_COLUMN_DAYTIME));
                 meteo.setDirection(direction);
                 meteo.setUnits(units);
-                meteo.setMin(temperature);
+                meteo.setMin(min);
                 meteo.setWeather(weather);
                 meteo.setDate(dateLoad);
                 meteo.setHumidity(humidity);
                 meteo.setSpeed(speed);
                 meteo.setTemperature(temperature);
-                meteo.setMax(temperature);
+                meteo.setMax(max);
                 meteo.setPressure(pressure);
                 DayTime dayTime = DayTime.valueOf(daytime);
                 this.map.get(date).put(dayTime, meteo);

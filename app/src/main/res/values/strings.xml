@@ -37,6 +37,9 @@
     <string name="city_not_exists">City %1$s Does not exists.</string>
     <string name="no_information">No information.</string>
 
+    <string name="text_humidity">Humidity: %1$s </string>
+    <string name="text_pression">Pression: %1$s hPa</string>
+    <string name="text_wind">wind speed: %1$s m/s</string>
     <string name="modify_the">Modify the : %1$s</string>
 
     <string name="city_add_to_favorites">City add to favorite</string>
