@@ -46,14 +46,20 @@ public class MeteoPrevisionFragment extends Fragment {
         TextView textViewTemperature = (TextView) view.findViewById(R.id.textViewTemperature);
         TextView textViewMin = (TextView) view.findViewById(R.id.textViewMin);
         TextView textViewMax = (TextView) view.findViewById(R.id.textViewMax);
+        TextView lastModified = (TextView) view.findViewById(R.id.textViewDateModif);
+        lastModified.setVisibility(View.INVISIBLE);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         String day = Utils.getStringDay(calendar.get(Calendar.DAY_OF_WEEK), this.activity);
         textViewDate.setText(day + " (" + dayTime.toString(this.activity) + ")");
         imageViewWeather.setImageResource(Utils.getImageByWeather(meteo.getWeather()));
         textViewTemperature.setText(meteo.getTemperature() + " " + meteo.getUnits());
-        textViewMin.setText(this.activity.getResources().getString(R.string.min, meteo.getMin(), meteo.getUnits()));
-        textViewMax.setText(this.activity.getResources().getString(R.string.max, meteo.getMax(), meteo.getUnits()));
+        textViewMin.setText(getResources().getString(R.string.min, meteo.getMin(), meteo.getUnits()));
+        textViewMax.setText(getResources().getString(R.string.max, meteo.getMax(), meteo.getUnits()));
+        if (meteo.isLoaded()) {
+            lastModified.setVisibility(View.VISIBLE);
+            lastModified.setText(getResources().getString(R.string.modify_the, meteo.getDate()));
+        }
         view.setBackground(getResources().getDrawable(Utils.getBackground(dayTime)));
         return view;
     }

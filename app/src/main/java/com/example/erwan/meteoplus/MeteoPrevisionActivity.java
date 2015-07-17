@@ -1,5 +1,8 @@
 package com.example.erwan.meteoplus;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -41,6 +44,9 @@ public class MeteoPrevisionActivity extends FragmentActivity {
     // Informations récupérées sur OpenWeather
     private Document doc;
 
+    //reload time in minutes
+    private final static int RELOAD_TIME = 60;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,12 +55,24 @@ public class MeteoPrevisionActivity extends FragmentActivity {
             //Restore the fragment's instance
             currentFragment = getSupportFragmentManager().getFragment(savedInstanceState, "fragment");
         }
-
         this.dates = new ArrayList<>();
         Bundle b = getIntent().getExtras();
         if(b.containsKey("city")) {
             this.cityDisplay = b.getString("city");
-            this.meteoMutiple = this.getWeatherByCityForFiveDay(this.cityDisplay);
+            this.meteoMutiple = new MeteoMutiple(this, this.cityDisplay);
+            if (this.meteoMutiple.exist()) {
+                this.meteoMutiple.load();
+                if (!this.meteoMutiple.isValid(RELOAD_TIME) && isNetworkAvailable()) {
+                    this.meteoMutiple = this.getWeatherByCityForFiveDay(this.cityDisplay);
+                    this.meteoMutiple.save();
+                } else {
+                    this.dates = this.meteoMutiple.getDates();
+                    this.currentDate = this.dates.get(0);
+                }
+            } else {
+                this.meteoMutiple = this.getWeatherByCityForFiveDay(this.cityDisplay);
+                this.meteoMutiple.save();
+            }
         }
         TextView textViewCity = (TextView) findViewById(R.id.textViewCity);
         textViewCity.setText(this.cityDisplay);
@@ -98,6 +116,13 @@ public class MeteoPrevisionActivity extends FragmentActivity {
         getSupportFragmentManager().putFragment(outState, "fragment", currentFragment);
     }
 
+    // On vérifie que l'on est connecté à internet
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     public void getXmlWithCityForFiveDay(String city){
 
         String urlCityMeteo= "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&mode=xml&units=metric&lang=fr&APPID=cd3f1c67011fafe48586264c65fb5d8f";
@@ -112,7 +137,7 @@ public class MeteoPrevisionActivity extends FragmentActivity {
 
     public MeteoMutiple getWeatherByCityForFiveDay (String city) {
         this.getXmlWithCityForFiveDay(city);
-        MeteoMutiple meteoMutiple = new MeteoMutiple(this);
+        MeteoMutiple meteoMutiple = new MeteoMutiple(this, city);
         NodeList entries = doc.getElementsByTagName("time");
         DayTime previousDayTime;
         Date todayDate = null;

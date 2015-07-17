@@ -29,6 +29,7 @@ public class Meteo implements Serializable {
     private String speed;
     private String direction;
     private Date date;
+    private boolean isLoaded;
 
     private SQLiteDatabase database;
     private DatabaseHandler databaseHandler;
@@ -49,6 +50,7 @@ public class Meteo implements Serializable {
     public Meteo(String name, Context context) {
         this.name = name;
         this.databaseHandler = new DatabaseHandler(context);
+        this.isLoaded = false;
     }
 
     public String getName () {
@@ -135,6 +137,10 @@ public class Meteo implements Serializable {
         this.date = date;
     }
 
+    public boolean isLoaded() {
+        return isLoaded;
+    }
+
     private void open () {
         this.database = this.databaseHandler.getWritableDatabase();
     }
@@ -182,6 +188,15 @@ public class Meteo implements Serializable {
         this.close();
     }
 
+    public void delete (Date day, DayTime dayTime) {
+        this.open();
+        this.database.delete(DatabaseHandler.TABLE_METEO,
+            DatabaseHandler.TABLE_METEO_COLUMN_NAME + " = '" + this.name + "'" +
+            " AND "+DatabaseHandler.TABLE_METEO_COLUMN_DAY + " = '" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(day) + "'" +
+            " AND "+DatabaseHandler.TABLE_METEO_COLUMN_DAYTIME + " = '" + dayTime.name(), null);
+        this.close();
+    }
+
     public void load () {
         if (exist()) {
             this.open();
@@ -205,6 +220,7 @@ public class Meteo implements Serializable {
             }
             cursor.close();
             this.close();
+            this.isLoaded = true;
         }
     }
 

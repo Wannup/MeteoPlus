@@ -3,24 +3,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        android:id="@+id/weatherImg"
+        android:layout_centerHorizontal="true" />
+
     <CheckBox
         android:layout_width="wrap_content"
-        android:layout_height="71dp"
-        android:text=""
+        android:layout_height="70dp"
         android:id="@+id/fav_button"
-        android:layout_gravity="center_horizontal|bottom"
         android:checked="false"
         android:button="@drawable/fav_selector"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/meteoInfo"
-        android:layout_toEndOf="@+id/meteoInfo" />
-
-
-    <ImageView
-        android:layout_width="174dp"
-        android:layout_height="174dp"
-        android:id="@+id/weatherImg"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="30dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -66,9 +64,9 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginLeft="65dp"
-        android:layout_marginStart="65dp"
-        android:layout_marginBottom="44dp" />
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="40dp" />
 
     <Button
         android:layout_width="wrap_content"
@@ -78,9 +76,9 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginRight="65dp"
-        android:layout_marginEnd="65dp"
-        android:layout_marginBottom="44dp" />
+        android:layout_marginRight="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="40dp" />
 
     <Button
         android:layout_width="wrap_content"
@@ -89,11 +87,7 @@
         android:id="@+id/previsionButton"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="130dp"
-        android:layout_marginEnd="65dp"
-        android:layout_marginBottom="44dp" />
+        android:layout_marginBottom="40dp" />
 
 </RelativeLayout>
 
